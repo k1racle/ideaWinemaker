@@ -12,7 +12,7 @@ useHead({ title: `${post.title} — Идея Винодела`, meta: [{ name: '
 <template>
   <main class="pt-8">
     <div class="container-iw">
-      <section><NuxtLink to="/novosti" class="text-xs uppercase tracking-[0.16em] text-bordeaux">← Все новости</NuxtLink></section>
+      <section><NuxtLink to="/novosti" class="text-xs uppercase tracking-[0.16em] text-primary">← Все новости</NuxtLink></section>
       <section class="mt-[52px] text-center">
         <h1 class="mx-auto max-w-[1100px] font-serif text-[clamp(34px,4.7vw,48px)] leading-[1.08] tracking-[0.03em]">{{ post.title }}</h1>
       </section>

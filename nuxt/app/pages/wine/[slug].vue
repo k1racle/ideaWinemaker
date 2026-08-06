@@ -42,7 +42,7 @@ useHead({
 <template>
   <main class="pt-8 font-sans">
     <div class="container-iw">
-      <section><NuxtLink to="/wines" class="text-xs uppercase tracking-[0.16em] text-bordeaux">← Все вина</NuxtLink></section>
+      <section><NuxtLink to="/wines" class="text-xs uppercase tracking-[0.16em] text-primary">← Все вина</NuxtLink></section>
 
       <section class="mt-7"><WineCodeFilter v-model="filters" :show-note="false" @submit="applyFilters" /></section>
 
@@ -51,14 +51,14 @@ useHead({
           <img :src="wine.image" :alt="`${wine.meta.variety}. ${wine.meta.method}`" class="h-[600px] w-full object-contain max-[900px]:h-[470px]">
         </div>
         <div class="flex flex-col justify-center">
-          <div class="text-[11px] uppercase tracking-[0.22em] text-bordeaux">{{ wine.meta.wineType }}</div>
-          <h1 class="mt-2.5 font-serif text-[clamp(34px,5vw,48px)] leading-[0.98] text-[#231916]">{{ wine.title }}</h1>
+          <div class="text-[11px] uppercase tracking-[0.22em] text-primary">{{ wine.meta.wineType }}</div>
+          <h1 class="mt-2.5 font-serif text-[clamp(34px,5vw,48px)] leading-[0.98] text-ink">{{ wine.title }}</h1>
           <h2 class="mt-2 font-serif text-[clamp(28px,4vw,38px)] leading-[1.02]">{{ wine.meta.variety }}</h2>
           <h3 class="mt-3 font-serif text-[clamp(24px,3vw,35px)] leading-[1.05]">{{ wine.meta.method }}</h3>
           <div class="mt-6 grid grid-cols-2 gap-x-7 gap-y-3 max-[560px]:grid-cols-1">
-            <div v-for="spec in specs" :key="spec[0]" class="border-b border-[#ddd4cd] pb-3">
-              <span class="text-[11px] uppercase tracking-[0.12em] text-bordeaux">{{ spec[0] }}</span>
-              <p class="mt-1 text-[15px] leading-[1.45] text-[#4e403a]">{{ spec[1] }}</p>
+            <div v-for="spec in specs" :key="spec[0]" class="border-b border-border-warm pb-3">
+              <span class="text-[11px] uppercase tracking-[0.12em] text-primary">{{ spec[0] }}</span>
+              <p class="mt-1 text-[15px] leading-[1.45] text-copy">{{ spec[1] }}</p>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@ useHead({
         <div>
           <h2 class="font-serif text-[clamp(30px,3vw,35px)] leading-[1.02]">Авторский замысел</h2>
           <p class="mt-4 leading-relaxed">{{ wine.content }}</p>
-          <blockquote class="mt-6 border-l-2 border-bordeaux px-6 py-2 font-serif text-[clamp(20px,2.2vw,27px)] leading-[1.35] text-[#7e6e5a]">{{ wine.authorQuote }}</blockquote>
+          <blockquote class="mt-6 border-l-2 border-primary px-6 py-2 font-serif text-[clamp(20px,2.2vw,27px)] leading-[1.35] text-muted">{{ wine.authorQuote }}</blockquote>
         </div>
         <div v-if="winemaker" class="h-full max-[850px]:mx-auto max-[850px]:h-auto max-[850px]:w-full max-[850px]:max-w-[500px]">
           <NuxtLink :to="`/vinodely/${winemaker.slug}`" class="block h-full min-h-[620px] overflow-hidden max-[850px]:aspect-[718/1024] max-[850px]:h-auto max-[850px]:min-h-0">
@@ -80,11 +80,11 @@ useHead({
       <section class="mt-[52px] grid grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)] gap-9 max-[850px]:grid-cols-1" aria-label="Терруар">
         <div>
           <h2 class="font-serif text-[clamp(30px,3vw,35px)] leading-[1.02]">Терруар</h2>
-          <div class="mt-4 space-y-4 leading-relaxed text-black/80"><p v-for="paragraph in wine.terroir" :key="paragraph">{{ paragraph }}</p></div>
+          <div class="mt-4 space-y-4 leading-relaxed text-ink/80"><p v-for="paragraph in wine.terroir" :key="paragraph">{{ paragraph }}</p></div>
         </div>
         <ClientOnly v-if="terroir">
           <TerroirMap :center="terroir.meta.center" :bounds="terroir.meta.bounds" :title="terroir.title" />
-          <template #fallback><div class="h-[360px] w-full rounded-[14px] bg-paper" /></template>
+          <template #fallback><div class="h-[360px] w-full rounded-[14px] bg-surface" /></template>
         </ClientOnly>
       </section>
 
@@ -92,13 +92,13 @@ useHead({
         <div>
           <article v-if="harvestDetails">
             <h2 class="font-serif text-[28px] leading-none">{{ harvestDetails.title }}</h2>
-            <ul class="mt-4 list-disc space-y-2.5 pl-5 text-[15px] leading-[1.6] text-[#1c1716]">
+            <ul class="mt-4 list-disc space-y-2.5 pl-5 text-[15px] leading-[1.6] text-ink">
               <li v-for="item in harvestDetails.items" :key="item">{{ item }}</li>
             </ul>
           </article>
           <article v-if="seasonDetails" class="mt-8">
             <h2 class="font-serif text-[28px] leading-none">{{ seasonDetails.title }}</h2>
-            <ul class="mt-4 list-disc space-y-2.5 pl-5 text-[15px] leading-[1.6] text-[#1c1716]">
+            <ul class="mt-4 list-disc space-y-2.5 pl-5 text-[15px] leading-[1.6] text-ink">
               <li v-for="item in seasonDetails.items" :key="item">{{ item }}</li>
             </ul>
           </article>
@@ -108,9 +108,9 @@ useHead({
           <h2 class="font-serif text-[28px] leading-none">{{ technologyDetails.title }}</h2>
           <ol class="mt-5">
             <li v-for="(item, index) in technologyDetails.items" :key="item" class="relative grid min-h-16 grid-cols-[40px_minmax(0,1fr)] gap-4 pb-5 last:min-h-0 last:pb-0">
-              <span v-if="index < technologyDetails.items.length - 1" aria-hidden="true" class="absolute bottom-0 left-[16px] top-8 w-px bg-bordeaux/55" />
-              <span class="relative z-[1] flex size-8 items-center justify-center rounded-full bg-bordeaux text-sm text-white">{{ index + 1 }}</span>
-              <p class="pt-1 text-[15px] leading-[1.55] text-[#1c1716]">{{ item }}</p>
+              <span v-if="index < technologyDetails.items.length - 1" aria-hidden="true" class="absolute bottom-0 left-[16px] top-8 w-px bg-primary/55" />
+              <span class="relative z-[1] flex size-8 items-center justify-center rounded-full bg-primary text-sm text-canvas">{{ index + 1 }}</span>
+              <p class="pt-1 text-[15px] leading-[1.55] text-ink">{{ item }}</p>
             </li>
           </ol>
         </article>

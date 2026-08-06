@@ -12,8 +12,8 @@ useHead({
     <div class="container-iw">
       <section class="text-center">
         <h1 class="font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[0.95] tracking-[0.18em]">Виноделы</h1>
-        <div class="mx-auto mt-5 h-px w-20 bg-oak/65" />
-        <!-- <p class="mx-auto mt-4 max-w-[840px] text-black/70">В коллекции винодел выступает как автор, а технология становится языком его высказывания.</p> -->
+        <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" />
+        <!-- <p class="mx-auto mt-4 max-w-[840px] text-ink/70">В коллекции винодел выступает как автор, а технология становится языком его высказывания.</p> -->
       </section>
       <section class="mt-[52px]">
         <div class="grid grid-cols-3 gap-7 max-[900px]:grid-cols-2 max-[620px]:grid-cols-1">
@@ -23,4 +23,3 @@ useHead({
     </div>
   </main>
 </template>
-

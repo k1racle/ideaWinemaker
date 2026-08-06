@@ -15,7 +15,7 @@ useHead({
     <div class="container-iw">
       <section class="text-center">
         <h1 class="font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[0.95] tracking-[0.18em]">Манифест</h1>
-        <div class="mx-auto mt-5 h-px w-20 bg-oak/65" />
+        <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" />
       </section>
 
       <section class="mt-[52px] grid grid-cols-[minmax(300px,420px)_1fr] items-start gap-[35px] max-[850px]:grid-cols-1">
@@ -26,8 +26,8 @@ useHead({
           <div class="space-y-4 text-[17px] leading-[1.8]"><p v-for="paragraph in manifestParagraphs" :key="paragraph">{{ paragraph }}</p></div>
           <section class="mt-[52px]">
             <h2 class="font-serif text-[clamp(34px,4vw,52px)] uppercase leading-[1.02] tracking-[0.05em]">{{ founder.name }}</h2>
-            <p class="mt-1 text-xs uppercase tracking-[0.2em] text-bordeaux">{{ founder.role }}</p>
-            <blockquote class="mt-5 font-serif text-[clamp(20px,2.2vw,28px)] leading-[1.3] text-[#7e6e5a]">{{ founder.quote }}</blockquote>
+            <p class="mt-1 text-xs uppercase tracking-[0.2em] text-primary">{{ founder.role }}</p>
+            <blockquote class="mt-5 font-serif text-[clamp(20px,2.2vw,28px)] leading-[1.3] text-muted">{{ founder.quote }}</blockquote>
             <div class="mt-6 space-y-4 leading-relaxed"><p v-for="paragraph in founderBiography" :key="paragraph">{{ paragraph }}</p></div>
           </section>
         </div>

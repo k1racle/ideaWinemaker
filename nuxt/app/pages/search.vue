@@ -37,9 +37,9 @@ useHead({ title: 'Поиск вина — Идея Винодела', meta: [{ n
     <div class="container-iw">
       <section class="text-center">
         <h1 class="font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[0.95] tracking-[0.18em]">Поиск вина</h1>
-        <form class="mx-auto mt-8 flex max-w-[720px] overflow-hidden rounded-full border border-line-strong" @submit.prevent="search">
-          <input v-model="queryText" type="search" placeholder="Название, сорт или технология" class="min-h-12 min-w-0 flex-1 bg-white px-6 text-sm outline-none placeholder:text-black/40">
-          <button type="submit" class="flex min-w-14 items-center justify-center bg-bordeaux text-white" aria-label="Найти">
+        <form class="mx-auto mt-8 flex max-w-[720px] overflow-hidden rounded-full border border-border-strong" @submit.prevent="search">
+          <input v-model="queryText" type="search" placeholder="Название, сорт или технология" class="min-h-12 min-w-0 flex-1 bg-canvas px-6 text-sm outline-none placeholder:text-ink/40">
+          <button type="submit" class="flex min-w-14 items-center justify-center bg-primary text-canvas" aria-label="Найти">
             <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 fill-none stroke-current" stroke-width="1.8">
               <circle cx="11" cy="11" r="7" />
               <path d="m16 16 5 5" />
@@ -49,9 +49,9 @@ useHead({ title: 'Поиск вина — Идея Винодела', meta: [{ n
       </section>
       <section class="mt-[52px]"><WineCodeFilter v-model="filters" @submit="search" /></section>
       <section class="mt-[52px]">
-        <p class="mb-7 text-sm text-black/60">Найдено вин: {{ results.length }}</p>
+        <p class="mb-7 text-sm text-ink/60">Найдено вин: {{ results.length }}</p>
         <div v-if="results.length" class="grid grid-cols-3 gap-7 max-[900px]:grid-cols-2 max-[620px]:grid-cols-1"><WineCard v-for="wine in results" :key="wine.id" :wine="wine" /></div>
-        <p v-else class="border-y border-line py-16 text-center font-serif text-2xl">Ничего не найдено</p>
+        <p v-else class="border-y border-border py-16 text-center font-serif text-2xl">Ничего не найдено</p>
       </section>
     </div>
   </main>

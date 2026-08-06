@@ -10,8 +10,8 @@ defineProps<{ winemaker: Winemaker }>()
       <img :src="winemaker.image" :alt="winemaker.title" loading="lazy" class="h-full w-full object-cover object-[50%_10%]">
     </NuxtLink>
     <h3 class="mt-2 font-serif text-[22px] leading-[1.08]"><NuxtLink :to="`/vinodely/${winemaker.slug}`">{{ winemaker.title }}</NuxtLink></h3>
-    <p class="mt-2 text-[11px] uppercase tracking-[0.16em] text-bordeaux">{{ winemaker.meta.location }}</p>
-    <p class="mt-2 text-sm leading-relaxed text-black/65">{{ winemaker.excerpt }}</p>
-    <NuxtLink :to="`/vinodely/${winemaker.slug}`" class="mt-3 text-xs uppercase tracking-[0.18em] text-bordeaux">Подробнее</NuxtLink>
+    <p class="mt-2 text-[11px] uppercase tracking-[0.16em] text-primary">{{ winemaker.meta.location }}</p>
+    <p class="mt-2 text-sm leading-relaxed text-ink/65">{{ winemaker.excerpt }}</p>
+    <NuxtLink :to="`/vinodely/${winemaker.slug}`" class="mt-3 text-xs uppercase tracking-[0.18em] text-primary">Подробнее</NuxtLink>
   </article>
 </template>

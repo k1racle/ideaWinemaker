@@ -25,8 +25,10 @@
    (список: `ls C:/ideaWinemaker/wp-content/uploads/2026/04/`); картинки темы — в `/img/`.
    Тег `<img>` (NuxtImg пока не используем).
 4. Внутренние ссылки — `<NuxtLink to>`, внешние — `<a target="_blank" rel="noopener noreferrer">`.
-5. Токены Tailwind (уже в `@theme`): цвета `black #1C1716`, `bordeaux #5A1F2D`, `olive #6A7158`,
-   `oak #9A7650`, `rose #B89A92`, `paper #F6F3EF`, `line`, `line-strong`; `font-sans` = Inter,
+5. Токены Tailwind (уже в `@theme`): брендовые `primary`, `primary-hover`, `secondary`, `tertiary`;
+   состояния `success`, `success-text`, `map-area`; текст `ink`, `copy`, `muted`; фоны `canvas`,
+   `surface`, `surface-accent`, `surface-input`; границы `border`, `border-strong`, `border-warm`;
+   `font-sans` = Inter,
    `font-serif` = Cormorant Garamond (оригинальный `.serif` → `font-serif`).
    Контейнер: готовый класс `container-iw` (min(100%−40px, 1320px), центрирован).
    Брейкпоинт шапки: `nav:` / `max-nav:` = 900px. Прочие медиа-запросы — arbitrary values

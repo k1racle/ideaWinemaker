@@ -11,13 +11,12 @@ withDefaults(defineProps<{
 
 <template>
   <div class="mb-7 flex items-center gap-3.5" :class="{ 'justify-center text-center': centered }">
-    <span v-if="!centered" class="h-px flex-1 bg-oak/45" />
+    <span v-if="!centered" class="h-px flex-1 bg-secondary/45" />
     <component
       :is="`h${level}`"
-      class="m-0 font-serif text-[28px] font-normal uppercase leading-[1.05] tracking-[0.16em] text-black max-[600px]:text-[23px] max-[600px]:tracking-[0.1em]"
+      class="m-0 font-serif text-[28px] font-normal uppercase leading-[1.05] tracking-[0.16em] text-ink max-[600px]:text-[23px] max-[600px]:tracking-[0.1em]"
       :class="{ 'w-full': centered }"
     >{{ title }}</component>
-    <span v-if="!centered" class="h-px flex-1 bg-oak/45" />
+    <span v-if="!centered" class="h-px flex-1 bg-secondary/45" />
   </div>
 </template>
-

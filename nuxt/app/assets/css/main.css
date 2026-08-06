@@ -3,14 +3,32 @@
 /* Design tokens ported from the WordPress theme
    (wp-content/themes/ideawinemaker/assets/css/style.css :root) */
 @theme {
-  --color-black: #1c1716;
-  --color-bordeaux: #5a1f2d;
-  --color-olive: #6a7158;
-  --color-oak: #9a7650;
-  --color-rose: #b89a92;
-  --color-paper: #f6f3ef;
-  --color-line: rgba(28, 23, 22, 0.1);
-  --color-line-strong: rgba(28, 23, 22, 0.18);
+  /* Brand */
+  --color-primary: #5a1f2d;
+  --color-primary-hover: #441722;
+  --color-secondary: #9a7650;
+  --color-tertiary: #b89a92;
+
+  /* States and map */
+  --color-success: #6a7158;
+  --color-success-text: #405034;
+  --color-map-area: #ef4444;
+
+  /* Text */
+  --color-ink: #1c1716;
+  --color-copy: #4e403a;
+  --color-muted: #7e6e5a;
+
+  /* Backgrounds */
+  --color-canvas: #ffffff;
+  --color-surface: #f6f3ef;
+  --color-surface-accent: #f4efea;
+  --color-surface-input: #fcfbfa;
+
+  /* Borders */
+  --color-border: rgba(28, 23, 22, 0.1);
+  --color-border-strong: rgba(28, 23, 22, 0.18);
+  --color-border-warm: #ddd4cd;
 
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -26,7 +44,7 @@
   }
 
   body {
-    @apply min-h-screen bg-white font-sans leading-relaxed text-black antialiased;
+    @apply min-h-screen bg-canvas font-sans leading-relaxed text-ink antialiased;
   }
 
   button,
@@ -37,7 +55,7 @@
   }
 
   ::selection {
-    background: rgba(90, 31, 45, 0.16);
+    background: color-mix(in oklch, var(--color-primary) 16%, transparent);
   }
 
   body.mobile-menu-open {
@@ -52,10 +70,10 @@
     margin-inline: auto;
   }
 
-  .line-oak {
+  .line-secondary {
     width: 96px;
     height: 1px;
     margin: 18px auto;
-    background: var(--color-oak);
+    background: var(--color-secondary);
   }
 }

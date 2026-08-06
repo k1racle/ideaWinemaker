@@ -38,19 +38,19 @@ useHead({
     <div class="container-iw">
       <section class="text-center">
         <h1 class="font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[0.95] tracking-[0.18em]">Вина</h1>
-        <div class="mx-auto mt-5 h-px w-20 bg-oak/65" />
+        <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" />
       </section>
 
       <section class="mt-[52px]"><WineCodeFilter v-model="filters" show-note @submit="applyFilters" /></section>
 
       <section class="mt-[52px]">
-        <p class="mb-7 text-sm text-black/60">Найдено вин: {{ filteredWines.length }}</p>
+        <p class="mb-7 text-sm text-ink/60">Найдено вин: {{ filteredWines.length }}</p>
         <div v-if="filteredWines.length" class="grid grid-cols-3 gap-7 max-[900px]:grid-cols-2 max-[620px]:grid-cols-1">
           <WineCard v-for="wine in filteredWines" :key="wine.id" :wine="wine" />
         </div>
-        <div v-else class="border-y border-line py-16 text-center">
+        <div v-else class="border-y border-border py-16 text-center">
           <p class="font-serif text-2xl">По выбранному коду вина не найдены.</p>
-          <button type="button" class="mt-3 text-xs uppercase tracking-[0.18em] text-bordeaux" @click="filters = { year: '', terroir: '', winemaker: '', method: '' }; applyFilters()">Сбросить фильтры</button>
+          <button type="button" class="mt-3 text-xs uppercase tracking-[0.18em] text-primary" @click="filters = { year: '', terroir: '', winemaker: '', method: '' }; applyFilters()">Сбросить фильтры</button>
         </div>
       </section>
 

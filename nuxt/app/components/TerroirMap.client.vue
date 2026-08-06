@@ -134,13 +134,17 @@ const renderMap = async () => {
 
     map.behaviors.disable('scrollZoom')
 
+    const themeStyles = getComputedStyle(document.documentElement)
+    const mapAreaColor = themeStyles.getPropertyValue('--color-map-area').trim()
+    const primaryColor = themeStyles.getPropertyValue('--color-primary').trim()
+
     const polygon = new ymaps.Polygon(
       [props.bounds],
       { hintContent: props.title, balloonContent: `Терруар ${props.title}` },
       {
-        fillColor: '#ef4444',
+        fillColor: mapAreaColor,
         fillOpacity: 0.52,
-        strokeColor: '#ef4444',
+        strokeColor: mapAreaColor,
         strokeOpacity: 1,
         strokeWidth: 4,
       },
@@ -148,7 +152,7 @@ const renderMap = async () => {
     const placemark = new ymaps.Placemark(
       props.center,
       { hintContent: `Терруар ${props.title}`, balloonContent: props.title },
-      { preset: 'islands#redIcon' },
+      { preset: 'islands#icon', iconColor: primaryColor },
     )
 
     map.geoObjects.add(polygon)
@@ -178,9 +182,9 @@ onBeforeUnmount(() => map?.destroy())
 </script>
 
 <template>
-  <div class="relative h-[360px] w-full overflow-hidden rounded-[14px] bg-paper" :aria-label="`Карта терруара ${title}`">
+  <div class="relative h-[360px] w-full overflow-hidden rounded-[14px] bg-surface" :aria-label="`Карта терруара ${title}`">
     <div ref="mapElement" class="h-full w-full" />
-    <div v-if="status !== 'ready'" class="absolute inset-0 flex items-center justify-center bg-paper px-7 text-center text-sm leading-relaxed text-black/65">
+    <div v-if="status !== 'ready'" class="absolute inset-0 flex items-center justify-center bg-surface px-7 text-center text-sm leading-relaxed text-ink/65">
       <span v-if="status === 'loading'">Загружаем Яндекс Карты…</span>
       <span v-else-if="status === 'missing-key'">Добавьте <code>NUXT_PUBLIC_YANDEX_MAPS_API_KEY</code> в файл <code>nuxt/.env</code>, чтобы показать карту.</span>
       <span v-else>Не удалось загрузить Яндекс Карты. Проверьте API-ключ и ограничения по HTTP Referer.</span>

@@ -134,6 +134,10 @@ const renderMap = async () => {
 
     map.behaviors.disable('scrollZoom')
 
+    const primaryColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-primary')
+      .trim()
+
     props.stores.forEach((store) => {
       const placemark = new ymaps.Placemark(
         store.coordinates,
@@ -141,7 +145,8 @@ const renderMap = async () => {
           hintContent: `${store.title}: ${store.city}, ${store.address}`,
         },
         {
-          preset: 'islands#redIcon',
+          preset: 'islands#icon',
+          iconColor: primaryColor,
         },
       )
 
@@ -169,9 +174,9 @@ onBeforeUnmount(() => map?.destroy())
 </script>
 
 <template>
-  <div class="relative h-[500px] w-full overflow-hidden bg-paper max-[700px]:h-[360px]" aria-label="Карта магазинов">
+  <div class="relative h-[500px] w-full overflow-hidden bg-surface max-[700px]:h-[360px]" aria-label="Карта магазинов">
     <div ref="mapElement" class="h-full w-full" />
-    <div v-if="status !== 'ready'" class="absolute inset-0 flex items-center justify-center bg-paper px-7 text-center text-sm leading-relaxed text-black/65">
+    <div v-if="status !== 'ready'" class="absolute inset-0 flex items-center justify-center bg-surface px-7 text-center text-sm leading-relaxed text-ink/65">
       <span v-if="status === 'loading'">Загружаем Яндекс Карты…</span>
       <span v-else-if="status === 'missing-key'">Добавьте <code>NUXT_PUBLIC_YANDEX_MAPS_API_KEY</code> в файл <code>nuxt/.env</code>, чтобы показать карту.</span>
       <span v-else>Не удалось загрузить Яндекс Карты. Проверьте API-ключ и ограничения по HTTP Referer.</span>
