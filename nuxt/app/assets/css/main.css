@@ -1,0 +1,61 @@
+@import 'tailwindcss';
+
+/* Design tokens ported from the WordPress theme
+   (wp-content/themes/ideawinemaker/assets/css/style.css :root) */
+@theme {
+  --color-black: #1c1716;
+  --color-bordeaux: #5a1f2d;
+  --color-olive: #6a7158;
+  --color-oak: #9a7650;
+  --color-rose: #b89a92;
+  --color-paper: #f6f3ef;
+  --color-line: rgba(28, 23, 22, 0.1);
+  --color-line-strong: rgba(28, 23, 22, 0.18);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+
+  /* Original theme breakpoints (style.css uses max-width: 900px for the header) */
+  --breakpoint-nav: 900px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply min-h-screen bg-white font-sans leading-relaxed text-black antialiased;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  ::selection {
+    background: rgba(90, 31, 45, 0.16);
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* .container in the WP theme: width: min(100% - 40px, 1320px), centered */
+  .container-iw {
+    width: min(calc(100% - 40px), 1320px);
+    margin-inline: auto;
+  }
+
+  .line-oak {
+    width: 96px;
+    height: 1px;
+    margin: 18px auto;
+    background: var(--color-oak);
+  }
+}

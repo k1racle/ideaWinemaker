@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Nuxt generated files
+.nuxt/
+.output/
+.data/
+.nitro/
+.cache/
+dist/
+
+# Local environment files (may contain API keys)
+.env
+.env.*
+!.env.example
+
+# Test and tool output
+coverage/
+*.log
+.eslintcache
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
