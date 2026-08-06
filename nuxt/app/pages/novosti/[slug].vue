@@ -15,7 +15,6 @@ useHead({ title: `${post.title} — Идея Винодела`, meta: [{ name: '
       <section><NuxtLink to="/novosti" class="text-xs uppercase tracking-[0.16em] text-bordeaux">← Все новости</NuxtLink></section>
       <section class="mt-[52px] text-center">
         <h1 class="mx-auto max-w-[1100px] font-serif text-[clamp(34px,4.7vw,48px)] leading-[1.08] tracking-[0.03em]">{{ post.title }}</h1>
-        <div class="mt-4 text-sm text-black/55">{{ post.meta.date }}</div>
       </section>
       <section class="mt-[52px] grid grid-cols-[minmax(320px,0.95fr)_minmax(0,1.05fr)] items-start gap-9 max-[850px]:grid-cols-1">
         <div class="overflow-hidden"><img :src="post.image" :alt="post.title" class="max-h-[650px] w-full object-cover"></div>

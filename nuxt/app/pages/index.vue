@@ -28,7 +28,7 @@ useHead({
       </section>
 
       <section class="mt-[52px]">
-        <WineCodeFilter v-model="filters" @submit="applyFilters" />
+        <WineCodeFilter v-model="filters" show-note @submit="applyFilters" />
       </section>
 
       <section class="mt-[52px] grid grid-cols-[minmax(300px,420px)_1fr] items-start gap-[34px] max-[850px]:grid-cols-1">
