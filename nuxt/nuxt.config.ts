@@ -71,6 +71,9 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'ru' },
       title: 'ИДЕЯ ВИНОДЕЛА',
+      link: [
+        { rel: 'icon', type: 'image/jpeg', href: '/uploads/2026/04/iw-icon.jpg' },
+      ],
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
