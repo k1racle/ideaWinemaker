@@ -278,7 +278,7 @@ const parsePolicySections = (source: string): PolicySection[] => {
 
 export const privacyPolicy: PolicyDocument = {
   title: 'Политика конфиденциальности и обработки персональных данных',
-  description: '',
+  description: 'Политика конфиденциальности и обработки персональных данных на сайте «Идея Винодела».',
   sections: parsePolicySections(privacyPolicyContent),
 }
 
@@ -558,6 +558,6 @@ const cookiesPolicyContent = [
 
 export const cookiesPolicy: PolicyDocument = {
   title: 'Политика использования файлов cookies',
-  description: '',
+  description: 'Политика использования файлов cookies на сайте «Идея Винодела».',
   sections: parsePolicySections(cookiesPolicyContent),
 }
