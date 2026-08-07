@@ -2,8 +2,13 @@
 import { partners, stores } from '~~/shared/mock/commerce'
 
 const selectedCity = ref('')
+const selectedStoreId = ref<number>()
 const cities = [...new Set(stores.map(store => store.city))]
 const filteredStores = computed(() => selectedCity.value ? stores.filter(store => store.city === selectedCity.value) : stores)
+
+watch(selectedCity, () => {
+  selectedStoreId.value = undefined
+})
 </script>
 
 <template>
@@ -26,7 +31,21 @@ const filteredStores = computed(() => selectedCity.value ? stores.filter(store =
           </select>
         </label>
         <div class="max-h-[370px] space-y-3 overflow-y-auto pr-2">
-          <article v-for="store in filteredStores" :id="`store-${store.id}`" :key="store.id" class="scroll-mt-28 rounded-[18px] border border-border-strong bg-canvas p-4">
+          <article
+            v-for="store in filteredStores"
+            :id="`store-${store.id}`"
+            :key="store.id"
+            role="button"
+            tabindex="0"
+            :aria-pressed="selectedStoreId === store.id"
+            class="scroll-mt-28 cursor-pointer rounded-[18px] border bg-canvas p-4 transition-[border-color,box-shadow] duration-200"
+            :class="selectedStoreId === store.id
+              ? 'border-primary ring-1 ring-primary shadow-lg shadow-primary/15'
+              : 'border-border-strong hover:border-primary/45 hover:shadow-sm'"
+            @click="selectedStoreId = store.id"
+            @keydown.enter.prevent="selectedStoreId = store.id"
+            @keydown.space.prevent="selectedStoreId = store.id"
+          >
             <h4 class="font-serif text-xl leading-tight">{{ store.title }}</h4>
             <div class="mt-1 flex items-center justify-between gap-4">
               <p class="text-sm text-ink/65">{{ store.city }}, {{ store.address }}</p>
@@ -36,6 +55,7 @@ const filteredStores = computed(() => selectedCity.value ? stores.filter(store =
                 rel="noopener noreferrer"
                 :aria-label="`Перейти на сайт ${store.title}`"
                 class="flex size-10 shrink-0 items-center justify-center rounded-full border border-primary text-primary transition hover:bg-primary hover:text-canvas"
+                @click.stop
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true" class="size-4 fill-none stroke-current" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M5 12h14M13 6l6 6-6 6" />
@@ -47,7 +67,7 @@ const filteredStores = computed(() => selectedCity.value ? stores.filter(store =
       </div>
 
       <ClientOnly>
-        <StoreMap :stores="filteredStores" />
+        <StoreMap v-model:selected-store-id="selectedStoreId" :stores="filteredStores" />
         <template #fallback><div class="h-[500px] animate-pulse bg-surface max-[700px]:h-[360px]" /></template>
       </ClientOnly>
     </div>

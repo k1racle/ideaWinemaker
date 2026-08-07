@@ -8,12 +8,20 @@ interface YandexMapInstance {
   behaviors: {
     disable: (behavior: string) => void
   }
+  setCenter: (
+    coordinates: [number, number],
+    zoom?: number,
+    options?: Record<string, unknown>,
+  ) => void
   destroy: () => void
 }
 
 interface YandexPlacemarkInstance {
   events: {
     add: (event: string, handler: () => void) => void
+  }
+  balloon: {
+    open: () => void
   }
 }
 
@@ -43,12 +51,31 @@ declare global {
   }
 }
 
-const props = defineProps<{ stores: Store[] }>()
+const props = defineProps<{
+  stores: Store[]
+  selectedStoreId?: number
+}>()
+const emit = defineEmits<{
+  'update:selectedStoreId': [id: number]
+}>()
 const config = useRuntimeConfig()
 const apiKey = String(config.public.yandexMapsApiKey || '')
 const mapElement = ref<HTMLDivElement>()
 const status = ref<'loading' | 'ready' | 'missing-key' | 'error'>(apiKey ? 'loading' : 'missing-key')
 let map: YandexMapInstance | undefined
+const placemarks = new Map<number, YandexPlacemarkInstance>()
+
+const focusStore = (storeId: number) => {
+  const store = props.stores.find(item => item.id === storeId)
+  const placemark = placemarks.get(storeId)
+  if (!map || !store || !placemark) return
+
+  map.setCenter(store.coordinates, 16, {
+    duration: 400,
+    checkZoomRange: true,
+  })
+  placemark.balloon.open()
+}
 
 const waitForYandexMaps = (timeout = 15000) => new Promise<YandexMapsApi>((resolve, reject) => {
   const startedAt = Date.now()
@@ -106,6 +133,7 @@ const renderMap = async () => {
     if (!mapElement.value) return
 
     map?.destroy()
+    placemarks.clear()
 
     const center: [number, number] = [
       props.stores.reduce((sum, store) => sum + store.coordinates[0], 0) / props.stores.length,
@@ -143,6 +171,8 @@ const renderMap = async () => {
         store.coordinates,
         {
           hintContent: `${store.title}: ${store.city}, ${store.address}`,
+          balloonContentHeader: store.title,
+          balloonContentBody: `${store.city}, ${store.address}`,
         },
         {
           preset: 'islands#icon',
@@ -151,12 +181,16 @@ const renderMap = async () => {
       )
 
       placemark.events.add('click', () => {
+        emit('update:selectedStoreId', store.id)
+        focusStore(store.id)
         document.getElementById(`store-${store.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       })
+      placemarks.set(store.id, placemark)
       map?.geoObjects.add(placemark)
     })
 
     status.value = 'ready'
+    if (props.selectedStoreId) focusStore(props.selectedStoreId)
   } catch {
     status.value = 'error'
   }
@@ -169,6 +203,10 @@ onMounted(() => {
 watch(() => props.stores, () => {
   void renderMap()
 }, { deep: true })
+
+watch(() => props.selectedStoreId, (storeId) => {
+  if (storeId) focusStore(storeId)
+})
 
 onBeforeUnmount(() => map?.destroy())
 </script>
