@@ -6,7 +6,7 @@ export interface NewsPost {
   content: string[]
   image: string
   publishedAt: string
-  // gallery: string[]
+  gallery?: string[]
   meta: {
     category: string
   }

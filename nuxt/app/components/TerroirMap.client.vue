@@ -6,11 +6,25 @@ interface YandexMapInstance {
   behaviors: {
     disable: (behavior: string) => void
   }
+  setCenter: (
+    coordinates: [number, number],
+    zoom?: number,
+    options?: Record<string, unknown>,
+  ) => void
   setBounds: (
     bounds: [[number, number], [number, number]],
     options?: Record<string, unknown>,
   ) => void
   destroy: () => void
+}
+
+interface YandexPlacemarkInstance {
+  events: {
+    add: (event: string, handler: () => void) => void
+  }
+  balloon: {
+    open: () => void
+  }
 }
 
 interface YandexMapsApi {
@@ -29,7 +43,7 @@ interface YandexMapsApi {
     coordinates: [number, number],
     properties?: Record<string, unknown>,
     options?: Record<string, unknown>,
-  ) => unknown
+  ) => YandexPlacemarkInstance
   Polygon: new (
     coordinates: [number, number][][],
     properties?: Record<string, unknown>,
@@ -59,8 +73,9 @@ const waitForYandexMaps = (timeout = 15000) => new Promise<YandexMapsApi>((resol
   const yandexWindow = window as unknown as YandexMapsWindow
 
   const check = () => {
-    if (yandexWindow.ymaps) {
-      yandexWindow.ymaps.ready(() => resolve(yandexWindow.ymaps!))
+    const ymaps = yandexWindow.ymaps
+    if (ymaps) {
+      ymaps.ready(() => resolve(ymaps))
       return
     }
 
@@ -81,7 +96,7 @@ const loadYandexMaps = () => {
   if (yandexWindow.ymaps) return waitForYandexMaps()
   if (yandexWindow.__iwYandexMapsV2Promise) return yandexWindow.__iwYandexMapsV2Promise
 
-  yandexWindow.__iwYandexMapsV2Promise = new Promise<YandexMapsApi>((resolve, reject) => {
+  const promise = new Promise<YandexMapsApi>((resolve, reject) => {
     const existingScript = document.querySelector<HTMLScriptElement>('script[data-iw-yandex-maps-v2]')
     if (!existingScript) {
       const script = document.createElement('script')
@@ -94,12 +109,13 @@ const loadYandexMaps = () => {
 
     void waitForYandexMaps().then(resolve, reject)
   })
+  yandexWindow.__iwYandexMapsV2Promise = promise
 
-  yandexWindow.__iwYandexMapsV2Promise.catch(() => {
+  promise.catch(() => {
     yandexWindow.__iwYandexMapsV2Promise = undefined
   })
 
-  return yandexWindow.__iwYandexMapsV2Promise
+  return promise
 }
 
 const renderMap = async () => {

@@ -13,6 +13,10 @@ interface YandexMapInstance {
     zoom?: number,
     options?: Record<string, unknown>,
   ) => void
+  setBounds: (
+    bounds: [[number, number], [number, number]],
+    options?: Record<string, unknown>,
+  ) => void
   destroy: () => void
 }
 
@@ -42,6 +46,11 @@ interface YandexMapsApi {
     properties?: Record<string, unknown>,
     options?: Record<string, unknown>,
   ) => YandexPlacemarkInstance
+  Polygon: new (
+    coordinates: [number, number][][],
+    properties?: Record<string, unknown>,
+    options?: Record<string, unknown>,
+  ) => unknown
 }
 
 declare global {
@@ -81,8 +90,9 @@ const waitForYandexMaps = (timeout = 15000) => new Promise<YandexMapsApi>((resol
   const startedAt = Date.now()
 
   const check = () => {
-    if (window.ymaps) {
-      window.ymaps.ready(() => resolve(window.ymaps!))
+    const ymaps = window.ymaps
+    if (ymaps) {
+      ymaps.ready(() => resolve(ymaps))
       return
     }
 
@@ -101,7 +111,7 @@ const loadYandexMaps = () => {
   if (window.ymaps) return waitForYandexMaps()
   if (window.__iwYandexMapsV2Promise) return window.__iwYandexMapsV2Promise
 
-  window.__iwYandexMapsV2Promise = new Promise<YandexMapsApi>((resolve, reject) => {
+  const promise = new Promise<YandexMapsApi>((resolve, reject) => {
     const existingScript = document.querySelector<HTMLScriptElement>('script[data-iw-yandex-maps-v2]')
     if (!existingScript) {
       const script = document.createElement('script')
@@ -114,12 +124,13 @@ const loadYandexMaps = () => {
 
     void waitForYandexMaps().then(resolve, reject)
   })
+  window.__iwYandexMapsV2Promise = promise
 
-  window.__iwYandexMapsV2Promise.catch(() => {
+  promise.catch(() => {
     window.__iwYandexMapsV2Promise = undefined
   })
 
-  return window.__iwYandexMapsV2Promise
+  return promise
 }
 
 const renderMap = async () => {

@@ -18,7 +18,7 @@ useHead({ title: `${post.title} — Идея Винодела`, meta: [{ name: '
       </section>
       <section class="mt-[52px] grid grid-cols-[minmax(320px,0.95fr)_minmax(0,1.05fr)] items-start gap-9 max-[850px]:grid-cols-1">
         <div class="overflow-hidden"><img :src="post.image" :alt="post.title" class="max-h-[650px] w-full object-cover"></div>
-        <article class="space-y-5 text-[17px] leading-[1.8]"><p v-for="paragraph in post.content" :key="paragraph">{{ paragraph }}</p><img v-for="image in post.gallery" :key="image" :src="image" alt="" loading="lazy" class="mt-7 w-full"></article>
+        <article class="space-y-5 text-[17px] leading-[1.8]"><p v-for="paragraph in post.content" :key="paragraph">{{ paragraph }}</p><img v-for="image in post.gallery ?? []" :key="image" :src="image" alt="" loading="lazy" class="mt-7 w-full"></article>
       </section>
       <section v-if="related.length" class="mt-[52px]">
         <SectionHeading title="Читайте также" centered />
