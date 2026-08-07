@@ -3,7 +3,7 @@ import { privacyPolicy } from '~~/shared/mock/policies'
 
 useHead({
   title: `${privacyPolicy.title} — Идея Винодела`,
-  meta: [{ name: 'description', content: privacyPolicy.title }],
+  meta: [{ name: 'description', content: privacyPolicy.description }],
 })
 </script>
 
