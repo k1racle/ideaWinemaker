@@ -3,7 +3,7 @@ import { newsBySlug, newsPosts } from '~~/shared/mock/news'
 
 const route = useRoute()
 const post = newsBySlug(String(route.params.slug))
-if (!post) throw createError({ statusCode: 404, statusMessage: 'Новость не найдена' })
+if (!post) throw createError({ status: 404, statusText: 'Новость не найдена' })
 const related = newsPosts.filter(item => item.id !== post.id).slice(0, 4)
 
 useHead({ title: `${post.title} — Идея Винодела`, meta: [{ name: 'description', content: post.excerpt }] })

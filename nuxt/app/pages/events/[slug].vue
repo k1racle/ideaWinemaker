@@ -3,7 +3,7 @@ import { eventBySlug } from '~~/shared/mock/events'
 
 const route = useRoute()
 const event = eventBySlug(String(route.params.slug))
-if (!event) throw createError({ statusCode: 404, statusMessage: 'Мероприятие не найдено' })
+if (!event) throw createError({ status: 404, statusText: 'Мероприятие не найдено' })
 
 useHead({
   title: `${event.title} — Идея Винодела`,

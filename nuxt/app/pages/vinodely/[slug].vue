@@ -4,7 +4,7 @@ import { wines } from '~~/shared/mock/wines'
 
 const route = useRoute()
 const winemaker = winemakerBySlug(String(route.params.slug))
-if (!winemaker) throw createError({ statusCode: 404, statusMessage: 'Винодел не найден' })
+if (!winemaker) throw createError({ status: 404, statusText: 'Винодел не найден' })
 
 const relatedWines = wines.filter(wine => winemaker.meta.wineSlugs.includes(wine.slug))
 

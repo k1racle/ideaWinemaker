@@ -2,7 +2,7 @@
 import type { NuxtError } from '#app'
 
 const props = defineProps<{ error: NuxtError }>()
-const status = computed(() => props.error.statusCode || 500)
+const status = computed(() => props.error.status || 500)
 const is404 = computed(() => status.value === 404)
 
 useHead({ title: is404.value ? 'Страница не найдена — Идея Винодела' : 'Ошибка — Идея Винодела' })

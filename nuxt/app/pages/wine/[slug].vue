@@ -8,7 +8,7 @@ const route = useRoute()
 const router = useRouter()
 const wine = wineBySlug(String(route.params.slug))
 
-if (!wine) throw createError({ statusCode: 404, statusMessage: 'Вино не найдено' })
+if (!wine) throw createError({ status: 404, statusText: 'Вино не найдено' })
 
 const winemaker = winemakerBySlug(wine.meta.winemakerSlug)
 const terroir = terroirBySlug(wine.meta.terroirSlug)
