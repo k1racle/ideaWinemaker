@@ -15,7 +15,7 @@ useHead({
     <div class="container-iw">
       <section class="text-center">
         <h1 class="font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[0.95] tracking-[0.18em]">Манифест</h1>
-        <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" />
+        <!-- <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" /> -->
       </section>
 
       <section class="mt-[52px] grid grid-cols-[minmax(300px,420px)_1fr] items-start gap-[35px] max-[850px]:grid-cols-1">

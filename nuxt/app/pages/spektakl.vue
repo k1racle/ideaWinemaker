@@ -9,7 +9,7 @@ useHead({ title: `${spectaclePage.title} — Идея Винодела`, meta: [
     <div class="container-iw">
       <section class="text-center">
         <h1 class="font-serif text-[clamp(34px,4.5vw,48px)] uppercase leading-[1.08] tracking-[0.06em]">
-          Иммерсивный эногастрономический спектакль <strong class="font-bold">«Идея винодела»</strong>
+          Иммерсивный эногастрономический спектакль «Идея винодела»
         </h1>
         <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" />
       </section>

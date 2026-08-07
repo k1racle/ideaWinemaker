@@ -5,6 +5,7 @@ export interface NewsPost {
   excerpt: string
   content: string[]
   image: string
+  publishedAt: string
   // gallery: string[]
   meta: {
     category: string
@@ -22,6 +23,7 @@ export const newsPosts: NewsPost[] = [
       'В 2026 году выставка состоится в отдельном павильоне, что позволит расширить экспозицию и представить новые тематические зоны. В числе участников будет бренд «Идея Винодела. Коллекция авторских вин». Презентация пройдёт в павильоне № 1, стенд A415. Для гостей и профессионального сообщества это станет возможностью познакомиться с коллекцией в рамках одного из ключевых отраслевых событий апреля в Краснодаре.',
     ],
     image: '/uploads/2026/04/vinoteh-vinorus-2026.png',
+    publishedAt: '2026-04-24',
     // gallery: ['/uploads/2026/04/vinotech-main.png'],
     meta: { category: 'Новости' },
   },

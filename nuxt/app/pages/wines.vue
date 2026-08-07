@@ -38,7 +38,7 @@ useHead({
     <div class="container-iw">
       <section class="text-center">
         <h1 class="font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[0.95] tracking-[0.18em]">Вина</h1>
-        <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" />
+        <!-- <div class="mx-auto mt-5 h-px w-20 bg-secondary/65" /> -->
       </section>
 
       <section class="mt-[52px]"><WineCodeFilter v-model="filters" show-note @submit="applyFilters" /></section>
