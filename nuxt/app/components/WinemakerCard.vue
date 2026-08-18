@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Winemaker } from '~~/shared/mock/winemakers'
+import type { Winemaker } from '~~/shared/types/content'
 
 defineProps<{ winemaker: Winemaker }>()
 </script>

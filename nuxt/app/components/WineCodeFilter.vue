@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import type { WineFilters } from '~~/shared/types'
-import { wines } from '~~/shared/mock/wines'
-import { winemakers } from '~~/shared/mock/winemakers'
-import { terroirs } from '~~/shared/mock/terroirs'
 
 const props = defineProps<{
   modelValue: WineFilters
@@ -14,8 +11,11 @@ const emit = defineEmits<{
   submit: []
 }>()
 
-const years = [...new Set(wines.map(wine => wine.meta.year))].sort((a, b) => b.localeCompare(a))
-const methods = [...new Set(wines.map(wine => wine.meta.methodCode))]
+const { data: wines } = await usePublicWines()
+const { data: winemakers } = await usePublicWinemakers()
+const { data: terroirs } = await usePublicTerroirs()
+const years = computed(() => [...new Set(wines.value.map(wine => wine.meta.year))].sort((a, b) => b.localeCompare(a)))
+const methods = computed(() => [...new Set(wines.value.map(wine => wine.meta.methodCode))])
 
 const update = (key: keyof WineFilters, value: string) => {
   emit('update:modelValue', { ...props.modelValue, [key]: value })

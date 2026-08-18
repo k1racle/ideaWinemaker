@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { wines } from '~~/shared/mock/wines'
-import { winemakers } from '~~/shared/mock/winemakers'
 import { newsPosts } from '~~/shared/mock/news'
 import { founder, homeIntro } from '~~/shared/mock/pages'
 import { emptyWineFilters } from '~~/shared/types'
 
 const router = useRouter()
 const filters = ref(emptyWineFilters())
+const { data: wines } = await usePublicWines()
+const { data: winemakers } = await usePublicWinemakers()
 
 const applyFilters = () => {
   const query = Object.fromEntries(Object.entries(filters.value).filter(([, value]) => value))

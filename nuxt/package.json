@@ -6,7 +6,17 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "typecheck": "nuxt typecheck",
+    "lint": "eslint app server scripts tests nuxt.config.ts drizzle.config.ts",
+    "test": "vitest run",
+    "auth:hash": "node scripts/hash-admin-password.ts",
+    "auth:verify": "node scripts/verify-admin-password.ts",
+    "db:generate": "node -r ./scripts/windows-os-userinfo.cjs ./node_modules/drizzle-kit/bin.cjs generate",
+    "db:migrate": "node scripts/migrate-database.ts",
+    "db:seed": "node scripts/seed-database.ts",
+    "db:backup": "node scripts/backup-database.ts",
+    "db:setup": "npm run db:migrate && npm run db:seed"
   },
   "dependencies": {
     "@nuxt/fonts": "^0.14.0",
@@ -14,20 +24,28 @@
     "@nuxt/image": "^2.1.0",
     "@nuxtjs/color-mode": "^4.0.1",
     "@nuxtjs/device": "^4.0.0",
-    "@nuxtjs/seo": "^5.3.9",
+    "@nuxtjs/seo": "^5.3.12",
     "@vueuse/nuxt": "^14.4.0",
+    "better-sqlite3": "^13.0.3",
+    "drizzle-orm": "^0.45.2",
     "nuxt": "^4.5.1",
+    "nuxt-auth-utils": "^0.5.30",
     "swiper": "^14.0.7",
     "vue": "^3.5.40",
-    "vue-router": "^5.2.0"
+    "vue-router": "^5.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@adonisjs/hash": "^10.1.1",
     "@nuxt/eslint": "^1.16.0",
     "@tailwindcss/vite": "^4.3.3",
+    "@types/better-sqlite3": "^9.6.0",
     "autoprefixer": "^10.4.19",
     "concurrently": "^8.2.2",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^10.8.0",
     "tailwindcss": "^4.3.3",
+    "vitest": "^4.1.10",
     "vue-tsc": "^3.3.8"
   }
 }

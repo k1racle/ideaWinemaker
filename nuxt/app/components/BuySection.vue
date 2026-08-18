@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { partners, stores } from '~~/shared/mock/commerce'
+import { partners } from '~~/shared/mock/commerce'
 
 const selectedCity = ref('')
 const selectedStoreId = ref<number>()
-const cities = [...new Set(stores.map(store => store.city))]
-const filteredStores = computed(() => selectedCity.value ? stores.filter(store => store.city === selectedCity.value) : stores)
+const { data: stores } = await usePublicStores()
+const cities = computed(() => [...new Set(stores.value.map(store => store.city))])
+const filteredStores = computed(() => selectedCity.value ? stores.value.filter(store => store.city === selectedCity.value) : stores.value)
 
 watch(selectedCity, () => {
   selectedStoreId.value = undefined

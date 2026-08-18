@@ -1,26 +1,6 @@
-export interface TerroirRecord {
-  id: number
-  slug: string
-  title: string
-  excerpt: string
-  content: string
-  image: string
-  gallery: string[]
-  meta: {
-    code: string
-    climate: string
-    tags: string[]
-    soil: string
-    coordinates: string
-    center: [number, number]
-    bounds: [number, number][]
-    area: string
-    humidity: string
-    slope: string
-    altitude: string
-    wineSlugs: string[]
-  }
-}
+import type { Terroir } from '../types/content'
+
+export type TerroirRecord = Terroir
 
 export const terroirs: TerroirRecord[] = [
   {
@@ -50,4 +30,3 @@ export const terroirs: TerroirRecord[] = [
 ]
 
 export const terroirBySlug = (slug: string) => terroirs.find(terroir => terroir.slug === slug)
-

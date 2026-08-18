@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { winemakerBySlug } from '~~/shared/mock/winemakers'
-import { wines } from '~~/shared/mock/wines'
+import type { Winemaker } from '~~/shared/types/content'
 
 const route = useRoute()
-const winemaker = winemakerBySlug(String(route.params.slug))
-if (!winemaker) throw createError({ status: 404, statusText: 'Винодел не найден' })
+const slug = String(route.params.slug)
+const { data: winemakerData, error } = await useFetch<Winemaker>(`/api/winemakers/${encodeURIComponent(slug)}`, {
+  key: `winemaker-${slug}`,
+})
+const winemaker = winemakerData.value
+if (!winemaker) throw createError({ statusCode: error.value?.statusCode || 404, message: 'Винодел не найден' })
 
-const relatedWines = wines.filter(wine => winemaker.meta.wineSlugs.includes(wine.slug))
+const { data: wines } = await usePublicWines()
+const relatedWines = computed(() => wines.value.filter(wine => winemaker.meta.wineSlugs.includes(wine.slug)))
 
 useHead({
   title: `${winemaker.title} — Идея Винодела`,

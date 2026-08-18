@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { wineBySlug, wines } from '~~/shared/mock/wines'
-import { winemakerBySlug } from '~~/shared/mock/winemakers'
-import { terroirBySlug } from '~~/shared/mock/terroirs'
 import type { WineFilters } from '~~/shared/types'
+import type { Terroir, Wine, Winemaker } from '~~/shared/types/content'
 
 const route = useRoute()
 const router = useRouter()
-const wine = wineBySlug(String(route.params.slug))
+const slug = String(route.params.slug)
+const { data: wineData, error } = await useFetch<Wine>(`/api/wines/${encodeURIComponent(slug)}`, {
+  key: `wine-${slug}`,
+})
+const wine = wineData.value
+if (!wine) throw createError({ statusCode: error.value?.statusCode || 404, message: 'Вино не найдено' })
 
-if (!wine) throw createError({ status: 404, statusText: 'Вино не найдено' })
-
-const winemaker = winemakerBySlug(wine.meta.winemakerSlug)
-const terroir = terroirBySlug(wine.meta.terroirSlug)
+const { data: winemaker } = await useFetch<Winemaker>(`/api/winemakers/${encodeURIComponent(wine.meta.winemakerSlug)}`, {
+  key: `winemaker-${wine.meta.winemakerSlug}`,
+})
+const { data: wines } = await usePublicWines()
+const { data: terroir } = await useFetch<Terroir>(`/api/terroirs/${encodeURIComponent(wine.meta.terroirSlug)}`, {
+  key: `terroir-${wine.meta.terroirSlug}`,
+})
+const terroirParagraphs = computed(() => (terroir.value?.content || '').split(/\n\s*\n/).filter(Boolean))
 const harvestDetails = wine.details.find(group => group.title === 'Урожай')
 const seasonDetails = wine.details.find(group => group.title === 'Сезон')
 const technologyDetails = wine.details.find(group => group.title === 'Технология')
@@ -46,9 +53,9 @@ useHead({
 
       <section class="mt-7"><WineCodeFilter v-model="filters" :show-note="false" @submit="applyFilters" /></section>
 
-      <section class="mt-[52px] grid grid-cols-[380px_minmax(0,1fr)] items-stretch gap-7 max-[900px]:grid-cols-1">
-        <div class="flex min-h-[610px] items-center justify-center max-[900px]:min-h-[480px]">
-          <img :src="wine.image" :alt="`${wine.meta.variety}. ${wine.meta.method}`" class="h-[600px] w-full object-contain max-[900px]:h-[470px]">
+      <section class="mt-[52px] grid grid-cols-[minmax(460px,0.9fr)_minmax(0,1.1fr)] items-stretch gap-7 max-[1000px]:grid-cols-[minmax(410px,0.9fr)_minmax(0,1.1fr)] max-[900px]:grid-cols-1">
+        <div class="flex min-h-[720px] items-center justify-center overflow-hidden max-[900px]:min-h-[600px] max-[560px]:min-h-[500px]">
+          <img :src="wine.image" :alt="`${wine.meta.variety}. ${wine.meta.method}`" class="h-[720px] w-full object-cover object-[70%_center] max-[900px]:h-[600px] max-[560px]:h-[500px]">
         </div>
         <div class="flex flex-col justify-center">
           <div class="text-[11px] uppercase tracking-[0.22em] text-primary">{{ wine.meta.wineType }}</div>
@@ -80,12 +87,13 @@ useHead({
       <section class="mt-[52px] grid grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)] gap-9 max-[850px]:grid-cols-1" aria-label="Терруар">
         <div>
           <h2 class="font-serif text-[clamp(30px,3vw,35px)] leading-[1.02]">Терруар</h2>
-          <div class="mt-4 space-y-4 leading-relaxed text-ink/80"><p v-for="paragraph in wine.terroir" :key="paragraph">{{ paragraph }}</p></div>
+          <div class="mt-4 space-y-4 leading-relaxed text-ink/80"><p v-for="paragraph in terroirParagraphs" :key="paragraph">{{ paragraph }}</p></div>
         </div>
-        <ClientOnly v-if="terroir">
+        <ClientOnly v-if="terroir && terroir.meta.bounds.length >= 3">
           <TerroirMap :center="terroir.meta.center" :bounds="terroir.meta.bounds" :title="terroir.title" />
           <template #fallback><div class="h-[360px] w-full rounded-[14px] bg-surface" /></template>
         </ClientOnly>
+        <div v-else class="flex h-[360px] items-center justify-center rounded-[14px] bg-surface px-7 text-center text-sm leading-relaxed text-ink/60">Карта появится после заполнения центра и границ терруара в админке.</div>
       </section>
 
       <section class="mt-[52px] grid grid-cols-2 gap-x-16 gap-y-10 max-[850px]:grid-cols-1" aria-label="Урожай, сезон и технология">

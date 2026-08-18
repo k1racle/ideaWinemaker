@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { wines } from '~~/shared/mock/wines'
 import type { WineFilters } from '~~/shared/types'
 
 definePageMeta({ alias: ['/wine'] })
 
 const route = useRoute()
 const router = useRouter()
+const { data: wines } = await usePublicWines()
 const asString = (value: unknown) => typeof value === 'string' ? value : ''
 
 const filters = ref<WineFilters>({
@@ -15,7 +15,7 @@ const filters = ref<WineFilters>({
   method: asString(route.query.method),
 })
 
-const filteredWines = computed(() => wines.filter(wine => (
+const filteredWines = computed(() => wines.value.filter(wine => (
   (!filters.value.year || wine.meta.year === filters.value.year)
   && (!filters.value.terroir || wine.meta.terroirSlug === filters.value.terroir)
   && (!filters.value.winemaker || wine.meta.winemakerSlug === filters.value.winemaker)

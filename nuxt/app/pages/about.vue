@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { winemakers } from '~~/shared/mock/winemakers'
 import { founder, founderBiography, manifestParagraphs } from '~~/shared/mock/pages'
 
 definePageMeta({ alias: ['/manifest'] })
+
+const { data: winemakers } = await usePublicWinemakers()
 
 useHead({
   title: 'Манифест — Идея Винодела',

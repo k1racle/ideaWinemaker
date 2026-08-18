@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { winemakers } from '~~/shared/mock/winemakers'
+const { data: winemakers } = await usePublicWinemakers()
 
 useHead({
   title: 'Виноделы — Идея Винодела',

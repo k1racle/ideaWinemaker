@@ -9,6 +9,13 @@ node_modules/
 .cache/
 dist/
 
+# SQLite runtime data
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite-journal
+backups/
+
 # Local environment files (may contain API keys)
 .env
 .env.*

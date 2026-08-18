@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { wines } from '~~/shared/mock/wines'
 import type { WineFilters } from '~~/shared/types'
 
 const route = useRoute()
 const router = useRouter()
+const { data: wines } = await usePublicWines()
 const queryText = ref(typeof route.query.q === 'string' ? route.query.q : '')
 const filters = ref<WineFilters>({
   year: typeof route.query.year === 'string' ? route.query.year : '',
@@ -14,7 +14,7 @@ const filters = ref<WineFilters>({
 
 const results = computed(() => {
   const needle = queryText.value.trim().toLocaleLowerCase('ru')
-  return wines.filter(wine => {
+  return wines.value.filter(wine => {
     const haystack = `${wine.title} ${wine.meta.variety} ${wine.meta.method} ${wine.meta.terroirName} ${wine.excerpt}`.toLocaleLowerCase('ru')
     return (!needle || haystack.includes(needle))
       && (!filters.value.year || wine.meta.year === filters.value.year)

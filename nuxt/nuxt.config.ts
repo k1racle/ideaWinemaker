@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     '@vueuse/nuxt',
     '@nuxt/eslint',
+    'nuxt-auth-utils',
   ],
 
   css: ['~/assets/css/main.css'],
@@ -41,6 +42,17 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    databasePath: process.env.NUXT_DATABASE_PATH || process.env.DATABASE_PATH || '.data/ideawinemaker.sqlite',
+    adminLogin: process.env.NUXT_ADMIN_LOGIN || process.env.ADMIN_LOGIN || '',
+    adminPasswordHash: process.env.NUXT_ADMIN_PASSWORD_HASH || process.env.ADMIN_PASSWORD_HASH || '',
+    session: {
+      password: process.env.NUXT_SESSION_PASSWORD || '',
+      maxAge: 60 * 60 * 24 * 7,
+      cookie: {
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
     public: {
       yandexMapsApiKey: process.env.NUXT_PUBLIC_YANDEX_MAPS_API_KEY || '',
     },
