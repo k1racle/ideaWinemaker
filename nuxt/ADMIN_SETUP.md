@@ -42,6 +42,38 @@
 - Не менять `NUXT_SESSION_PASSWORD` без необходимости: это завершит текущие сессии.
 - Не хранить `.env`, SQLite и резервные копии в Git.
 
+## Docker Compose
+
+1. Создать `.env` на основе `.env.example` и заполнить логин, хеш пароля и `NUXT_SESSION_PASSWORD`.
+2. Собрать и запустить контейнер:
+
+   ```bash
+   docker compose up --build -d
+   ```
+
+3. Проверить состояние и логи:
+
+   ```bash
+   docker compose ps
+   docker compose logs -f app
+   ```
+
+Сайт будет доступен на `http://localhost:3002`, админка — на `http://localhost:3002/admin/login`. Адрес и внешний порт можно изменить переменными `APP_HOST` и `APP_PORT`; для production с Nginx рекомендуется оставить `APP_HOST=127.0.0.1`.
+
+Миграции запускаются при каждом старте контейнера. Seed по умолчанию также запускается повторно и безопасно пропускает существующие записи; отключить его можно через `RUN_DB_SEED=false`.
+
+SQLite и резервные копии хранятся в Docker volume `ideawinemaker_data`. Обычная команда `docker compose down` сохраняет данные, а `docker compose down -v` удаляет volume вместе с базой. Создать согласованную резервную копию можно так:
+
+```bash
+docker compose exec app node scripts/backup-database.ts
+```
+
+После обновления исходников:
+
+```bash
+docker compose up --build -d
+```
+
 ## Проверки
 
 ```bash

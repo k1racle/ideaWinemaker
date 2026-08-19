@@ -1,0 +1,28 @@
+services:
+  app:
+    image: ideawinemaker:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL:-https://ideawinemaker.ru}
+    restart: unless-stopped
+    init: true
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      NUXT_DATABASE_PATH: /app/data/ideawinemaker.sqlite
+      DATABASE_BACKUP_DIR: /app/data/backups
+      RUN_DB_SEED: ${RUN_DB_SEED:-true}
+    ports:
+      - "${APP_HOST:-127.0.0.1}:${APP_PORT:-3002}:3000"
+    volumes:
+      - ideawinemaker_data:/app/data
+    stop_grace_period: 20s
+
+volumes:
+  ideawinemaker_data:
+    name: ideawinemaker_data
