@@ -53,7 +53,7 @@ useHead({
 
       <section class="mt-7"><WineCodeFilter v-model="filters" :show-note="false" @submit="applyFilters" /></section>
 
-      <section class="mt-[52px] grid grid-cols-[minmax(460px,0.9fr)_minmax(0,1.1fr)] items-stretch gap-7 max-[1000px]:grid-cols-[minmax(410px,0.9fr)_minmax(0,1.1fr)] max-[900px]:grid-cols-1">
+      <section class="mt-20 grid grid-cols-[minmax(460px,0.9fr)_minmax(0,1.1fr)] items-stretch gap-7 max-[1000px]:grid-cols-[minmax(410px,0.9fr)_minmax(0,1.1fr)] max-[900px]:grid-cols-1">
         <div class="flex min-h-[720px] items-center justify-center overflow-hidden max-[900px]:min-h-[600px] max-[560px]:min-h-[500px]">
           <NuxtImg
             :src="wine.image"
@@ -70,7 +70,7 @@ useHead({
           <h1 class="mt-2.5 font-serif text-[clamp(34px,5vw,48px)] leading-[0.98] text-ink">{{ wine.title }}</h1>
           <h2 class="mt-2 font-serif text-[clamp(28px,4vw,38px)] leading-[1.02]">{{ wine.meta.variety }}</h2>
           <h3 class="mt-3 font-serif text-[clamp(24px,3vw,35px)] leading-[1.05]">{{ wine.meta.method }}</h3>
-          <div class="mt-6 grid grid-cols-2 gap-x-7 gap-y-3 max-[560px]:grid-cols-1">
+          <div class="mt-10 grid grid-cols-2 gap-x-7 gap-y-3 max-[560px]:grid-cols-1">
             <div v-for="spec in specs" :key="spec[0]" class="border-b border-border-warm pb-3">
               <span class="text-[11px] uppercase tracking-[0.12em] text-primary">{{ spec[0] }}</span>
               <p class="mt-1 text-[15px] leading-[1.45] text-copy">{{ spec[1] }}</p>
@@ -79,7 +79,7 @@ useHead({
         </div>
       </section>
 
-      <section class="mt-[52px] grid grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)] items-stretch gap-9 max-[850px]:grid-cols-1" aria-label="Авторский замысел и о виноделе">
+      <section class="mt-20 grid grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)] items-stretch gap-9 max-[850px]:grid-cols-1" aria-label="Авторский замысел и о виноделе">
         <div>
           <h2 class="font-serif text-[clamp(30px,3vw,35px)] leading-[1.02]">Авторский замысел</h2>
           <p class="mt-4 leading-relaxed">{{ wine.content }}</p>
@@ -101,7 +101,7 @@ useHead({
         </div>
       </section>
 
-      <section class="mt-[52px] grid grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)] gap-9 max-[850px]:grid-cols-1" aria-label="Терруар">
+      <section class="mt-20 grid grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)] gap-9 max-[850px]:grid-cols-1" aria-label="Терруар">
         <div>
           <h2 class="font-serif text-[clamp(30px,3vw,35px)] leading-[1.02]">Терруар</h2>
           <div class="mt-4 space-y-4 leading-relaxed text-ink/80"><p v-for="paragraph in terroirParagraphs" :key="paragraph">{{ paragraph }}</p></div>
@@ -113,7 +113,7 @@ useHead({
         <div v-else class="flex h-[360px] items-center justify-center rounded-[14px] bg-surface px-7 text-center text-sm leading-relaxed text-ink/60">Карта появится после заполнения центра и границ терруара в админке.</div>
       </section>
 
-      <section class="mt-[52px] grid grid-cols-2 gap-x-16 gap-y-10 max-[850px]:grid-cols-1" aria-label="Урожай, сезон и технология">
+      <section class="mt-20 grid grid-cols-2 gap-x-16 gap-y-10 max-[850px]:grid-cols-1" aria-label="Урожай, сезон и технология">
         <div>
           <article v-if="harvestDetails">
             <h2 class="font-serif text-[28px] leading-none">{{ harvestDetails.title }}</h2>
@@ -141,12 +141,12 @@ useHead({
         </article>
       </section>
 
-      <section class="mt-[52px]">
+      <section class="mt-20">
         <SectionHeading title="Вина коллекции Идея Винодела" centered />
         <div class="grid grid-cols-3 gap-7 max-[900px]:grid-cols-2 max-[620px]:grid-cols-1"><WineCard v-for="item in wines" :key="item.id" :wine="item" /></div>
       </section>
 
-      <BuySection />
+      <BuySection class="!mt-20" />
     </div>
   </main>
 </template>
