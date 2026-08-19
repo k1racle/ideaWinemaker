@@ -11,7 +11,7 @@ services:
     environment:
       NODE_ENV: production
       HOST: 0.0.0.0
-      PORT: 3000
+      PORT: 8080
       NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL:-https://ideawinemaker.ru}
       NUXT_PUBLIC_YANDEX_MAPS_API_KEY: ${NUXT_PUBLIC_YANDEX_MAPS_API_KEY:-}
       NUXT_ADMIN_LOGIN: ${NUXT_ADMIN_LOGIN:-admin}
