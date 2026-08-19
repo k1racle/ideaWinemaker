@@ -24,7 +24,15 @@ useHead({
       <section><NuxtLink to="/vinodely" class="text-xs uppercase tracking-[0.16em] text-primary">← Назад к виноделам</NuxtLink></section>
       <section class="mt-8 grid grid-cols-[minmax(0,380px)_minmax(0,1fr)] items-start gap-[clamp(28px,4vw,48px)] max-[900px]:grid-cols-1">
         <div class="sticky top-[92px] max-[900px]:static max-[900px]:mx-auto max-[900px]:w-full max-[900px]:max-w-[520px]">
-          <img :src="winemaker.image" :alt="winemaker.title" class="max-h-[min(72vh,520px)] w-full object-cover object-[50%_10%]">
+          <NuxtImg
+            :src="winemaker.image"
+            :alt="winemaker.title"
+            :width="900"
+            sizes="100vw md:380px"
+            format="webp"
+            fetchpriority="high"
+            class="max-h-[min(72vh,520px)] w-full object-cover object-[50%_10%]"
+          />
         </div>
         <div class="min-w-0">
           <h1 class="font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[1.02] tracking-[0.05em]">{{ winemaker.title }}</h1>

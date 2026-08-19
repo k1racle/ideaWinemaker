@@ -8,12 +8,16 @@ defineProps<{ wine: Wine }>()
   <article class="relative flex min-w-0 flex-col items-center pb-5 text-center">
     <NuxtLink :to="`/wine/${wine.slug}`" class="absolute inset-0 z-[2]" :aria-label="`${wine.meta.variety}: ${wine.meta.method}`" />
     <div class="relative z-[1] flex h-[338px] w-full items-center justify-center overflow-hidden max-[900px]:h-[310px] max-[600px]:h-[290px]">
-      <img
+      <NuxtImg
         :src="wine.image"
         :alt="`${wine.meta.variety}. ${wine.meta.method}`"
+        :width="720"
+        sizes="100vw sm:50vw lg:33vw"
+        format="webp"
         loading="lazy"
+        decoding="async"
         class="h-full w-full object-contain"
-      >
+      />
     </div>
     <div class="relative z-[1] mt-3 text-xs uppercase tracking-[0.18em] text-primary">{{ wine.meta.wineType }}</div>
     <h3 class="relative z-[1] mt-1 flex min-h-[2.3em] items-center justify-center font-serif text-[22px] leading-[1.08]">{{ wine.title }}</h3>

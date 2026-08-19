@@ -18,7 +18,17 @@ useHead({
         <NuxtLink to="/events" class="text-xs uppercase tracking-[0.16em] text-primary">← Все мероприятия</NuxtLink>
         <h1 class="mt-6 font-serif text-[clamp(38px,5vw,48px)] uppercase leading-[1.05] tracking-[0.06em]">{{ event.title }}</h1>
       </section>
-      <section class="mt-[52px] h-[500px] overflow-hidden max-[700px]:h-[330px]"><img :src="event.image" :alt="event.title" class="h-full w-full object-cover"></section>
+      <section class="mt-[52px] h-[500px] overflow-hidden max-[700px]:h-[330px]">
+        <NuxtImg
+          :src="event.image"
+          :alt="event.title"
+          :width="1600"
+          sizes="100vw"
+          format="webp"
+          fetchpriority="high"
+          class="h-full w-full object-cover"
+        />
+      </section>
       <section class="mt-[52px] grid grid-cols-[minmax(280px,0.75fr)_minmax(0,1.25fr)] gap-8 max-[800px]:grid-cols-1">
         <aside class="order-1 space-y-5 max-[800px]:order-2">
           <h2 class="font-serif text-[28px] uppercase tracking-[0.12em]">Детали события</h2>
@@ -41,7 +51,20 @@ useHead({
       </section>
       <section v-if="event.gallery.length" class="mt-[52px]">
         <SectionHeading title="Галерея" />
-        <div class="grid grid-cols-4 gap-7 max-[900px]:grid-cols-2 max-[520px]:grid-cols-1"><div v-for="image in event.gallery" :key="image" class="h-44 overflow-hidden"><img :src="image" alt="" loading="lazy" class="h-full w-full object-cover"></div></div>
+        <div class="grid grid-cols-4 gap-7 max-[900px]:grid-cols-2 max-[520px]:grid-cols-1">
+          <div v-for="image in event.gallery" :key="image" class="h-44 overflow-hidden">
+            <NuxtImg
+              :src="image"
+              alt=""
+              :width="600"
+              sizes="100vw sm:50vw lg:25vw"
+              format="webp"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+          </div>
+        </div>
       </section>
     </div>
   </main>

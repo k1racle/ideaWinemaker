@@ -35,6 +35,7 @@
 
 - Приложение запускать как Node/Nitro server после `npm run build`, не через `npm run generate`.
 - `NUXT_DATABASE_PATH` должен быть абсолютным путём на постоянном writable-диске.
+- Команды `db:migrate`, `db:seed`, `db:setup`, `db:backup` и `db:generate` автоматически читают `.env` из корня проекта. Для другого файла передать `ENV_FILE=/etc/ideawinemaker.env`.
 - Перед первым запуском выполнить `npm run db:setup`; повторный seed не создаёт дубликаты.
 - Файл SQLite, его WAL-файлы и каталог с существующими изображениями должны входить в резервное копирование.
 - Согласованную резервную копию SQLite можно создать командой `npm run db:backup`; каталог задаётся через `DATABASE_BACKUP_DIR`.
@@ -49,4 +50,4 @@ npm test
 npm run build
 ```
 
-Исходные массивы в `shared/mock/winemakers.ts` и `shared/mock/wines.ts` сохранены. Они нужны для первичного seed, но публичные страницы читают данные только из SQLite API.
+Исходные массивы в `shared/mock/winemakers.ts`, `shared/mock/wines.ts`, `shared/mock/terroirs.ts` и массив магазинов в `shared/mock/commerce.ts` сохранены. Они нужны для первичного seed, но публичные страницы читают эти данные только из SQLite API. Массив партнёров из `commerce.ts` по-прежнему используется напрямую.

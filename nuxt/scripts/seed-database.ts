@@ -1,6 +1,8 @@
 import { openDatabase } from '../server/database/connection.ts'
 import { seedExistingContent } from '../server/database/seed.ts'
+import { loadScriptEnvironment } from './load-script-environment.ts'
 
+loadScriptEnvironment()
 const context = openDatabase()
 
 try {

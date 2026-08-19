@@ -18,7 +18,16 @@ watch(selectedCity, () => {
     <div class="grid grid-cols-[minmax(210px,0.5fr)_minmax(230px,0.62fr)_minmax(0,1.38fr)] items-start gap-7 max-[1050px]:grid-cols-[minmax(210px,0.55fr)_minmax(0,1.45fr)] max-[720px]:grid-cols-1">
       <div class="grid gap-4 max-[720px]:grid-cols-3 max-[580px]:grid-cols-1">
         <a v-for="partner in partners" :key="partner.url" :href="partner.url" target="_blank" rel="noopener noreferrer" class="flex min-h-[126px] flex-col items-center justify-center rounded-[18px] border border-border-strong bg-canvas px-4 py-4 text-center transition hover:bg-surface/60 hover:shadow-sm">
-          <img :src="partner.image" :alt="partner.name" loading="lazy" class="h-[64px] w-full object-contain">
+          <NuxtImg
+            :src="partner.image"
+            :alt="partner.name"
+            :width="320"
+            sizes="160px sm:220px"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="h-[64px] w-full object-contain"
+          />
           <span class="mt-2 text-[11px] uppercase tracking-[0.14em] text-primary">{{ partner.site }}</span>
         </a>
       </div>

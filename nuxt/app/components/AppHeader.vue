@@ -36,11 +36,16 @@ onUnmounted(() => {
     <div class="container-iw grid grid-cols-[15%_70%_15%] items-center justify-between py-[18px] max-nav:grid-cols-[minmax(0,1fr)_auto] max-nav:py-[14px]">
       <div class="flex min-w-0 items-center gap-3 whitespace-nowrap">
         <NuxtLink to="/" aria-label="ИДЕЯ ВИНОДЕЛА" class="block max-nav:max-w-[220px]">
-          <img
+          <NuxtImg
             src="/uploads/2026/04/main-logo-scaled.png"
             alt="ИДЕЯ ВИНОДЕЛА"
+            :width="520"
+            :height="146"
+            sizes="220px md:15vw"
+            format="webp"
+            fetchpriority="high"
             class="h-auto max-h-12 w-auto max-w-full nav:max-h-10"
-          >
+          />
         </NuxtLink>
       </div>
 

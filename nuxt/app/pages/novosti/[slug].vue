@@ -17,8 +17,32 @@ useHead({ title: `${post.title} — Идея Винодела`, meta: [{ name: '
         <h1 class="mx-auto max-w-[1100px] font-serif text-[clamp(34px,4.7vw,48px)] leading-[1.08] tracking-[0.03em]">{{ post.title }}</h1>
       </section>
       <section class="mt-[52px] grid grid-cols-[minmax(320px,0.95fr)_minmax(0,1.05fr)] items-start gap-9 max-[850px]:grid-cols-1">
-        <div class="overflow-hidden"><img :src="post.image" :alt="post.title" class="max-h-[650px] w-full object-cover"></div>
-        <article class="space-y-5 text-[17px] leading-[1.8]"><p v-for="paragraph in post.content" :key="paragraph">{{ paragraph }}</p><img v-for="image in post.gallery ?? []" :key="image" :src="image" alt="" loading="lazy" class="mt-7 w-full"></article>
+        <div class="overflow-hidden">
+          <NuxtImg
+            :src="post.image"
+            :alt="post.title"
+            :width="1200"
+            sizes="100vw md:50vw"
+            format="webp"
+            fetchpriority="high"
+            class="max-h-[650px] w-full object-cover"
+          />
+        </div>
+        <article class="space-y-5 text-[17px] leading-[1.8]">
+          <p v-for="paragraph in post.content" :key="paragraph">{{ paragraph }}</p>
+          <NuxtImg
+            v-for="image in post.gallery ?? []"
+            :key="image"
+            :src="image"
+            alt=""
+            :width="1200"
+            sizes="100vw md:50vw"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="mt-7 w-full"
+          />
+        </article>
       </section>
       <section v-if="related.length" class="mt-[52px]">
         <SectionHeading title="Читайте также" centered />

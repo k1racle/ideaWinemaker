@@ -1,7 +1,9 @@
 import { resolve } from 'node:path'
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
 import { openDatabase } from '../server/database/connection.ts'
+import { loadScriptEnvironment } from './load-script-environment.ts'
 
+loadScriptEnvironment()
 const context = openDatabase()
 
 try {

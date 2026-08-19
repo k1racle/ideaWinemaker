@@ -1,7 +1,9 @@
 import { mkdirSync } from 'node:fs'
 import { isAbsolute, resolve } from 'node:path'
 import { openDatabase } from '../server/database/connection.ts'
+import { loadScriptEnvironment } from './load-script-environment.ts'
 
+loadScriptEnvironment()
 const context = openDatabase()
 const configuredDirectory = process.env.DATABASE_BACKUP_DIR || '.data/backups'
 const backupDirectory = isAbsolute(configuredDirectory) ? configuredDirectory : resolve(process.cwd(), configuredDirectory)

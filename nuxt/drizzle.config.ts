@@ -1,4 +1,7 @@
 import { defineConfig } from 'drizzle-kit'
+import { loadScriptEnvironment } from './scripts/load-script-environment'
+
+loadScriptEnvironment()
 
 export default defineConfig({
   dialect: 'sqlite',

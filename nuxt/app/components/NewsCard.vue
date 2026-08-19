@@ -14,7 +14,16 @@ withDefaults(defineProps<{
 <template>
   <article class="flex min-w-0 flex-col pb-5" :class="{ 'text-center': centered }">
     <NuxtLink :to="`/novosti/${post.slug}`" class="block h-[338px] overflow-hidden max-[600px]:h-[260px]">
-      <img :src="post.image" :alt="post.title" loading="lazy" class="h-full w-full object-cover">
+      <NuxtImg
+        :src="post.image"
+        :alt="post.title"
+        :width="900"
+        sizes="100vw sm:50vw lg:25vw"
+        format="webp"
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover"
+      />
     </NuxtLink>
     <h3 class="mt-2 font-serif text-[22px] leading-[1.12]">
       <NuxtLink :to="`/novosti/${post.slug}`">{{ post.title }}</NuxtLink>

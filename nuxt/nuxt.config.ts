@@ -22,6 +22,11 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
   ],
 
+  image: {
+    format: ['webp'],
+    quality: 82,
+  },
+
   css: ['~/assets/css/main.css'],
 
   vite: {

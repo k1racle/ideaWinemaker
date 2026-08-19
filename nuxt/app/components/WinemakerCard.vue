@@ -7,7 +7,16 @@ defineProps<{ winemaker: Winemaker }>()
 <template>
   <article class="flex min-w-0 flex-col pb-5">
     <NuxtLink :to="`/vinodely/${winemaker.slug}`" class="block h-[min(39vw,520px)] min-h-[460px] overflow-hidden max-[900px]:h-[520px] max-[600px]:h-[440px] max-[600px]:min-h-0">
-      <img :src="winemaker.image" :alt="winemaker.title" loading="lazy" class="h-full w-full object-cover object-[50%_10%]">
+      <NuxtImg
+        :src="winemaker.image"
+        :alt="winemaker.title"
+        :width="718"
+        sizes="100vw sm:50vw lg:33vw"
+        format="webp"
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover object-[50%_10%]"
+      />
     </NuxtLink>
     <h3 class="mt-2 font-serif text-[22px] leading-[1.08]"><NuxtLink :to="`/vinodely/${winemaker.slug}`">{{ winemaker.title }}</NuxtLink></h3>
     <p class="mt-2 text-[11px] uppercase tracking-[0.16em] text-primary">{{ winemaker.meta.location }}</p>

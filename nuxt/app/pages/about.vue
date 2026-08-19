@@ -21,7 +21,15 @@ useHead({
 
       <section class="mt-[52px] grid grid-cols-[minmax(300px,420px)_1fr] items-start gap-[35px] max-[850px]:grid-cols-1">
         <div class="sticky top-[110px] h-[min(62vw,560px)] min-h-[460px] overflow-hidden max-[850px]:static max-[850px]:mx-auto max-[850px]:h-[540px] max-[850px]:w-full max-[850px]:max-w-[520px] max-[600px]:h-[440px] max-[600px]:min-h-0">
-          <img :src="founder.image" :alt="founder.name" class="h-full w-full object-cover">
+          <NuxtImg
+            :src="founder.image"
+            :alt="founder.name"
+            :width="840"
+            sizes="100vw md:420px"
+            format="webp"
+            fetchpriority="high"
+            class="h-full w-full object-cover"
+          />
         </div>
         <div class="min-w-0">
           <div class="space-y-4 text-[17px] leading-[1.8]"><p v-for="paragraph in manifestParagraphs" :key="paragraph">{{ paragraph }}</p></div>

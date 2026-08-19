@@ -33,7 +33,16 @@ useHead({
 
       <section class="mt-[52px] grid grid-cols-[minmax(300px,420px)_1fr] items-start gap-[34px] max-[850px]:grid-cols-1">
         <div class="h-[min(60vw,560px)] min-h-[460px] overflow-hidden max-[850px]:mx-auto max-[850px]:h-[540px] max-[850px]:w-full max-[850px]:max-w-[520px] max-[600px]:h-[440px] max-[600px]:min-h-0">
-          <img :src="founder.image" :alt="founder.name" loading="lazy" class="h-full w-full object-cover">
+          <NuxtImg
+            :src="founder.image"
+            :alt="founder.name"
+            :width="840"
+            sizes="100vw md:420px"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
         </div>
         <div>
           <h2 class="font-serif text-[clamp(34px,4vw,52px)] uppercase leading-[1.02] tracking-[0.05em]">{{ founder.name }}</h2>
@@ -61,7 +70,17 @@ useHead({
 
     <section class="container-iw mt-[52px]">
       <NuxtLink to="/spektakl" class="relative flex min-h-[420px] items-center justify-center overflow-hidden bg-ink px-10 py-14 text-center text-canvas max-[700px]:min-h-[280px] max-[700px]:px-[26px] max-[520px]:min-h-60 max-[520px]:px-5 max-[520px]:py-7">
-        <img src="/uploads/2026/04/banner-na-glavnvuyu-spektakl.jpg" alt="Иммерсивная эногастрономическая постановка" class="absolute inset-0 h-full w-full object-cover object-[center_38%] opacity-65">
+        <NuxtImg
+          src="/uploads/2026/04/banner-na-glavnvuyu-spektakl.jpg"
+          alt="Иммерсивная эногастрономическая постановка"
+          :width="1920"
+          :height="1080"
+          sizes="100vw"
+          format="webp"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover object-[center_38%] opacity-65"
+        />
         <h2 class="relative z-[1] max-w-[850px] font-serif text-[clamp(32px,5vw,58px)] font-normal leading-[1.05] tracking-[0.04em]">Иммерсивная эногастрономическая постановка «Идея Винодела»</h2>
       </NuxtLink>
     </section>

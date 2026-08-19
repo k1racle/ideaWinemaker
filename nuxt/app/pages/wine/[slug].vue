@@ -55,7 +55,15 @@ useHead({
 
       <section class="mt-[52px] grid grid-cols-[minmax(460px,0.9fr)_minmax(0,1.1fr)] items-stretch gap-7 max-[1000px]:grid-cols-[minmax(410px,0.9fr)_minmax(0,1.1fr)] max-[900px]:grid-cols-1">
         <div class="flex min-h-[720px] items-center justify-center overflow-hidden max-[900px]:min-h-[600px] max-[560px]:min-h-[500px]">
-          <img :src="wine.image" :alt="`${wine.meta.variety}. ${wine.meta.method}`" class="h-[720px] w-full object-cover object-[70%_center] max-[900px]:h-[600px] max-[560px]:h-[500px]">
+          <NuxtImg
+            :src="wine.image"
+            :alt="`${wine.meta.variety}. ${wine.meta.method}`"
+            :width="1200"
+            sizes="100vw md:50vw"
+            format="webp"
+            fetchpriority="high"
+            class="h-[720px] w-full object-cover object-[70%_center] max-[900px]:h-[600px] max-[560px]:h-[500px]"
+          />
         </div>
         <div class="flex flex-col justify-center">
           <div class="text-[11px] uppercase tracking-[0.22em] text-primary">{{ wine.meta.wineType }}</div>
@@ -79,7 +87,16 @@ useHead({
         </div>
         <div v-if="winemaker" class="h-full max-[850px]:mx-auto max-[850px]:h-auto max-[850px]:w-full max-[850px]:max-w-[500px]">
           <NuxtLink :to="`/vinodely/${winemaker.slug}`" class="block h-full min-h-[620px] overflow-hidden max-[850px]:aspect-[718/1024] max-[850px]:h-auto max-[850px]:min-h-0">
-            <img :src="winemaker.image" :alt="winemaker.title" class="h-full w-full object-cover object-[50%_10%]">
+            <NuxtImg
+              :src="winemaker.image"
+              :alt="winemaker.title"
+              :width="900"
+              sizes="100vw md:40vw"
+              format="webp"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover object-[50%_10%]"
+            />
           </NuxtLink>
         </div>
       </section>
