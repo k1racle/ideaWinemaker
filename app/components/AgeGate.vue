@@ -1,22 +1,33 @@
 <script setup lang="ts">
 type AgeGateState = 'question' | 'denied' | 'allowed'
 
-const ageConfirmation = useCookie<string | null>('iw_age_confirmed', {
-  default: () => null,
-  maxAge: 60 * 60 * 24 * 365,
-  path: '/',
-  sameSite: 'lax',
-})
-
-const state = ref<AgeGateState>(ageConfirmation.value === 'yes' ? 'allowed' : 'question')
+const ageConfirmationKey = 'iw_age_confirmed'
+const state = ref<AgeGateState>('question')
+const isStorageChecked = ref(false)
 const dialog = useTemplateRef<HTMLElement>('dialog')
-const isVisible = computed(() => state.value !== 'allowed')
+const isVisible = computed(() => isStorageChecked.value && state.value !== 'allowed')
 
 let previousBodyOverflow = ''
 
 const focusDialog = async () => {
   await nextTick()
   dialog.value?.focus()
+}
+
+const hasAgeConfirmation = () => {
+  try {
+    return sessionStorage.getItem(ageConfirmationKey) === 'yes'
+  } catch {
+    return false
+  }
+}
+
+const saveAgeConfirmation = () => {
+  try {
+    sessionStorage.setItem(ageConfirmationKey, 'yes')
+  } catch {
+    // Access remains allowed for the current page even when storage is blocked.
+  }
 }
 
 watch(isVisible, async (visible) => {
@@ -33,6 +44,14 @@ watch(isVisible, async (visible) => {
   }
 }, { immediate: true })
 
+onMounted(() => {
+  if (hasAgeConfirmation()) {
+    state.value = 'allowed'
+  }
+
+  isStorageChecked.value = true
+})
+
 onBeforeUnmount(() => {
   if (import.meta.client) {
     document.body.style.overflow = previousBodyOverflow
@@ -40,7 +59,7 @@ onBeforeUnmount(() => {
 })
 
 const confirmAge = () => {
-  ageConfirmation.value = 'yes'
+  saveAgeConfirmation()
   state.value = 'allowed'
 }
 
