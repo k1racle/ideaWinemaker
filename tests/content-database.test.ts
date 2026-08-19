@@ -16,9 +16,11 @@ import {
   createWinemaker,
   createWinery,
   getAdminContentOverview,
+  getAdminStoreById,
   getAdminTerroirById,
   getAdminWineById,
   getAdminWinemakerById,
+  getAdminWineryById,
   getPublicTerroirBySlug,
   getPublicWineBySlug,
   getPublicWinemakerBySlug,
@@ -26,12 +28,16 @@ import {
   listPublicStores,
   listPublicWinemakers,
   listPublicWines,
+  setStoreVisibility,
   setTerroirVisibility,
   setWinemakerVisibility,
+  setWineryVisibility,
   setWineVisibility,
+  updateStore,
   updateTerroir,
   updateWine,
   updateWinemaker,
+  updateWinery,
 } from '../server/repositories/content'
 
 let context: DatabaseContext
@@ -171,6 +177,7 @@ describe('SQLite content migration', () => {
       annualProduction: '100000 бут./год',
       specialization: 'Тихие вина',
       visitInfo: 'По предварительной записи',
+      isVisible: true,
     })
 
     expect(context.sqlite.prepare('SELECT title, region, vineyard_area FROM wineries WHERE id = ?').get(created.id)).toEqual({
@@ -185,7 +192,22 @@ describe('SQLite content migration', () => {
       title: 'Тестовая винодельня',
       region: 'Краснодарский край',
       foundedYear: 2018,
+      isVisible: true,
     }])
+
+    const original = getAdminWineryById(created.id)!
+    updateWinery(created.id, {
+      ...original,
+      title: 'Обновлённая винодельня',
+      region: 'Ростовская область',
+      isVisible: false,
+    })
+    expect(getAdminWineryById(created.id)).toMatchObject({
+      title: 'Обновлённая винодельня',
+      region: 'Ростовская область',
+      isVisible: false,
+    })
+    expect(setWineryVisibility(created.id, true)).toEqual({ id: created.id, isVisible: true })
   })
 
   it('stores a new shop point with the commerce.ts fields and exposes it publicly', () => {
@@ -196,6 +218,7 @@ describe('SQLite content migration', () => {
       address: 'ул. Тестовая, 1',
       website: 'https://example.com/',
       coordinates: [45.03, 38.97],
+      isVisible: true,
     })
 
     expect(listPublicStores().at(-1)).toEqual({
@@ -212,7 +235,27 @@ describe('SQLite content migration', () => {
       address: 'ул. Тестовая, 1',
       website: 'https://another.example.com/',
       coordinates: [45.04, 38.98],
+      isVisible: true,
     })).toThrow()
+
+    expect(setStoreVisibility(created.id, false)).toEqual({ id: created.id, isVisible: false })
+    expect(listPublicStores().some(store => store.id === created.id)).toBe(false)
+    expect(getAdminStoreById(created.id)?.isVisible).toBe(false)
+
+    updateStore(created.id, {
+      title: 'Обновлённая винотека',
+      city: 'Анапа',
+      address: 'ул. Новая, 2',
+      website: 'https://example.com/updated',
+      coordinates: [44.89, 37.31],
+      isVisible: true,
+    })
+    expect(listPublicStores().at(-1)).toMatchObject({
+      id: created.id,
+      title: 'Обновлённая винотека',
+      city: 'Анапа',
+      coordinates: [44.89, 37.31],
+    })
   })
 
   it('edits records and their nested fields while preserving the hidden gallery', () => {

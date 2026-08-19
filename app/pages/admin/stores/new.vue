@@ -10,6 +10,7 @@ const form = ref<StoreFormValue>({
   website: '',
   latitude: '',
   longitude: '',
+  isVisible: true,
 })
 const pending = ref(false)
 const errorMessage = ref('')
@@ -57,18 +58,7 @@ useHead({ title: 'Добавить точку магазина — Админ-п
     <p v-if="errorMessage" role="alert" class="mt-6 max-w-5xl rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">{{ errorMessage }}</p>
 
     <form class="mt-8 max-w-5xl space-y-8" novalidate @submit.prevent="submit">
-      <section class="grid gap-6 rounded-2xl border border-border bg-canvas p-6 md:grid-cols-2">
-        <AdminField v-model="form.title" label="Название" placeholder="«ВИНОТЕКА. Название»" />
-        <AdminField v-model="form.city" label="Город" placeholder="Краснодар" />
-        <AdminField v-model="form.address" class="md:col-span-2" label="Адрес" placeholder="ул. Казбекская, д. 1" />
-        <AdminField v-model="form.website" class="md:col-span-2" label="Сайт" placeholder="https://example.ru/" />
-      </section>
-
-      <section class="grid gap-6 rounded-2xl border border-border bg-canvas p-6 md:grid-cols-2">
-        <AdminField v-model="form.latitude" label="Широта" placeholder="45.066195" />
-        <AdminField v-model="form.longitude" label="Долгота" placeholder="38.950088" />
-        <p class="md:col-span-2 text-xs leading-relaxed text-ink/55">Введите координаты точки в десятичном формате. Допустимы точка или запятая в качестве десятичного разделителя.</p>
-      </section>
+      <AdminStoreFormFields v-model="form" />
 
       <div class="flex flex-wrap gap-4">
         <button type="submit" :disabled="pending" class="min-h-12 cursor-pointer rounded-full bg-primary px-7 text-sm uppercase tracking-[0.14em] text-canvas disabled:cursor-not-allowed disabled:opacity-50">{{ pending ? 'Сохранение…' : 'Добавить точку' }}</button>

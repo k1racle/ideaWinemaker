@@ -48,10 +48,12 @@ export const wineries = sqliteTable('wineries', {
   annualProduction: text('annual_production').notNull().default(''),
   specialization: text('specialization').notNull().default(''),
   visitInfo: text('visit_info').notNull().default(''),
+  isVisible: integer('is_visible', { mode: 'boolean' }).notNull().default(true),
   ...timestamps,
 }, table => [
   uniqueIndex('wineries_slug_unique').on(table.slug),
   index('wineries_region_idx').on(table.region),
+  index('wineries_visible_idx').on(table.isVisible),
 ])
 
 export const stores = sqliteTable('stores', {
@@ -62,10 +64,12 @@ export const stores = sqliteTable('stores', {
   website: text('website').notNull(),
   latitude: real('latitude').notNull(),
   longitude: real('longitude').notNull(),
+  isVisible: integer('is_visible', { mode: 'boolean' }).notNull().default(true),
   ...timestamps,
 }, table => [
   uniqueIndex('stores_location_unique').on(table.title, table.city, table.address),
   index('stores_city_idx').on(table.city),
+  index('stores_visible_idx').on(table.isVisible),
 ])
 
 export const winemakerBiography = sqliteTable('winemaker_biography', {

@@ -32,6 +32,7 @@ export interface WineryFormValue {
   annualProduction: string
   specialization: string
   visitInfo: string
+  isVisible: boolean
 }
 
 export interface StoreFormValue {
@@ -41,6 +42,7 @@ export interface StoreFormValue {
   website: string
   latitude: string
   longitude: string
+  isVisible: boolean
 }
 
 interface WineFormValue {
@@ -218,6 +220,7 @@ export const toWineryPayload = (form: WineryFormValue) => ({
   annualProduction: form.annualProduction.trim(),
   specialization: form.specialization.trim(),
   visitInfo: form.visitInfo.trim(),
+  isVisible: form.isVisible,
 })
 
 export const validateStoreForm = (form: StoreFormValue) => {
@@ -261,6 +264,7 @@ export const toStorePayload = (form: StoreFormValue) => ({
     Number(form.latitude.replace(',', '.')),
     Number(form.longitude.replace(',', '.')),
   ] as [number, number],
+  isVisible: form.isVisible,
 })
 
 export const validateWineForm = (form: WineFormValue) => {

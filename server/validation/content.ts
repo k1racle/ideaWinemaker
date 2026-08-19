@@ -100,6 +100,7 @@ export const createWinerySchema = z.object({
   annualProduction: optionalText('Годовой объём производства', 100),
   specialization: optionalText('Специализация', 3000),
   visitInfo: optionalText('Посещение и экскурсии', 3000),
+  isVisible: z.boolean().default(true),
 }).strict().superRefine((value, context) => {
   if ((value.latitude === null) !== (value.longitude === null)) {
     context.addIssue({
@@ -116,6 +117,7 @@ export const createStoreSchema = z.object({
   address: requiredText('Адрес', 1000),
   website,
   coordinates: coordinatePair,
+  isVisible: z.boolean().default(true),
 }).strict()
 
 export const createWineSchema = z.object({
@@ -175,6 +177,8 @@ export const createTerroirSchema = z.object({
 }).strict()
 
 export const updateWinemakerSchema = createWinemakerSchema
+export const updateWinerySchema = createWinerySchema
+export const updateStoreSchema = createStoreSchema
 export const updateWineSchema = createWineSchema.omit({ gallery: true })
 export const updateTerroirSchema = createTerroirSchema
 

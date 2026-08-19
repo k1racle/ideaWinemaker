@@ -2,9 +2,11 @@ import { and, asc, count, eq, inArray, type SQL } from 'drizzle-orm'
 import { createError } from 'h3'
 import type {
   AdminContentOverview,
+  AdminStoreEditorData,
   AdminTerroirEditorData,
   AdminWineEditorData,
   AdminWinemakerEditorData,
+  AdminWineryEditorData,
   Store,
   Terroir,
   Wine,
@@ -271,7 +273,11 @@ export const getPublicWineBySlug = (slug: string) => {
 
 export const listPublicStores = (): Store[] => {
   const { db } = useContentDatabase()
-  return db.select().from(stores).orderBy(asc(stores.id)).all().map(row => ({
+  return db.select().from(stores)
+    .where(eq(stores.isVisible, true))
+    .orderBy(asc(stores.id))
+    .all()
+    .map(row => ({
     id: row.id,
     title: row.title,
     city: row.city,
@@ -289,6 +295,7 @@ export const getAdminContentOverview = (): AdminContentOverview => {
     title: wineries.title,
     region: wineries.region,
     foundedYear: wineries.foundedYear,
+    isVisible: wineries.isVisible,
   }).from(wineries)
     .orderBy(asc(wineries.id))
     .all()
@@ -300,6 +307,7 @@ export const getAdminContentOverview = (): AdminContentOverview => {
     address: row.address,
     website: row.website,
     coordinates: [row.latitude, row.longitude] as [number, number],
+    isVisible: row.isVisible,
   }))
 
   const winemakerRows = db.select({
@@ -342,6 +350,51 @@ export const getAdminContentOverview = (): AdminContentOverview => {
     .all()
 
   return { wineries: wineryRows, stores: storeRows, winemakers: winemakerRows, terroirs: terroirRows, wines: wineRows }
+}
+
+export const getAdminWineryById = (id: number): AdminWineryEditorData | undefined => {
+  const { db } = useContentDatabase()
+  const row = db.select().from(wineries).where(eq(wineries.id, id)).get()
+  if (!row) return undefined
+
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    legalName: row.legalName,
+    excerpt: row.excerpt,
+    content: row.content,
+    image: row.image,
+    foundedYear: row.foundedYear,
+    region: row.region,
+    address: row.address,
+    latitude: row.latitude,
+    longitude: row.longitude,
+    website: row.website,
+    email: row.email,
+    phone: row.phone,
+    vineyardArea: row.vineyardArea,
+    annualProduction: row.annualProduction,
+    specialization: row.specialization,
+    visitInfo: row.visitInfo,
+    isVisible: row.isVisible,
+  }
+}
+
+export const getAdminStoreById = (id: number): AdminStoreEditorData | undefined => {
+  const { db } = useContentDatabase()
+  const row = db.select().from(stores).where(eq(stores.id, id)).get()
+  if (!row) return undefined
+
+  return {
+    id: row.id,
+    title: row.title,
+    city: row.city,
+    address: row.address,
+    website: row.website,
+    coordinates: [row.latitude, row.longitude],
+    isVisible: row.isVisible,
+  }
 }
 
 export const getAdminWinemakerById = (id: number): AdminWinemakerEditorData | undefined => {
@@ -483,6 +536,7 @@ export const createStore = (input: CreateStoreInput) => {
     website: input.website,
     latitude: input.coordinates[0],
     longitude: input.coordinates[1],
+    isVisible: input.isVisible,
   }).returning({ id: stores.id }).get()
 }
 
@@ -588,6 +642,50 @@ export const createWine = (input: CreateWineInput) => {
 
     return created
   })
+}
+
+export const updateWinery = (id: number, input: CreateWineryInput) => {
+  const { db } = useContentDatabase()
+  return db.update(wineries).set({
+    slug: input.slug,
+    title: input.title,
+    legalName: input.legalName,
+    excerpt: input.excerpt,
+    content: input.content,
+    image: input.image,
+    foundedYear: input.foundedYear,
+    region: input.region,
+    address: input.address,
+    latitude: input.latitude,
+    longitude: input.longitude,
+    website: input.website,
+    email: input.email,
+    phone: input.phone,
+    vineyardArea: input.vineyardArea,
+    annualProduction: input.annualProduction,
+    specialization: input.specialization,
+    visitInfo: input.visitInfo,
+    isVisible: input.isVisible,
+    updatedAt: new Date(),
+  }).where(eq(wineries.id, id))
+    .returning({ id: wineries.id, slug: wineries.slug })
+    .get()
+}
+
+export const updateStore = (id: number, input: CreateStoreInput) => {
+  const { db } = useContentDatabase()
+  return db.update(stores).set({
+    title: input.title,
+    city: input.city,
+    address: input.address,
+    website: input.website,
+    latitude: input.coordinates[0],
+    longitude: input.coordinates[1],
+    isVisible: input.isVisible,
+    updatedAt: new Date(),
+  }).where(eq(stores.id, id))
+    .returning({ id: stores.id })
+    .get()
 }
 
 export const updateWinemaker = (id: number, input: CreateWinemakerInput) => {
@@ -761,5 +859,23 @@ export const setWineVisibility = (id: number, isVisible: boolean) => {
     .set({ isVisible, updatedAt: new Date() })
     .where(eq(wines.id, id))
     .returning({ id: wines.id, isVisible: wines.isVisible })
+    .get()
+}
+
+export const setWineryVisibility = (id: number, isVisible: boolean) => {
+  const { db } = useContentDatabase()
+  return db.update(wineries)
+    .set({ isVisible, updatedAt: new Date() })
+    .where(eq(wineries.id, id))
+    .returning({ id: wineries.id, isVisible: wineries.isVisible })
+    .get()
+}
+
+export const setStoreVisibility = (id: number, isVisible: boolean) => {
+  const { db } = useContentDatabase()
+  return db.update(stores)
+    .set({ isVisible, updatedAt: new Date() })
+    .where(eq(stores.id, id))
+    .returning({ id: stores.id, isVisible: stores.isVisible })
     .get()
 }

@@ -100,6 +100,7 @@ export interface AdminWineryListItem {
   title: string
   region: string
   foundedYear: number | null
+  isVisible: boolean
 }
 
 export interface Store {
@@ -109,6 +110,10 @@ export interface Store {
   address: string
   website: string
   coordinates: [number, number]
+}
+
+export interface AdminStoreListItem extends Store {
+  isVisible: boolean
 }
 
 export interface AdminWineListItem {
@@ -132,10 +137,31 @@ export interface AdminTerroirListItem {
 
 export interface AdminContentOverview {
   wineries: AdminWineryListItem[]
-  stores: Store[]
+  stores: AdminStoreListItem[]
   winemakers: AdminWinemakerListItem[]
   terroirs: AdminTerroirListItem[]
   wines: AdminWineListItem[]
+}
+
+export interface AdminWineryEditorData extends AdminWineryListItem {
+  legalName: string
+  excerpt: string
+  content: string
+  image: string
+  address: string
+  latitude: number | null
+  longitude: number | null
+  website: string
+  email: string
+  phone: string
+  vineyardArea: string
+  annualProduction: string
+  specialization: string
+  visitInfo: string
+}
+
+export interface AdminStoreEditorData extends Store {
+  isVisible: boolean
 }
 
 export interface AdminWinemakerEditorData extends Omit<Winemaker, 'meta'> {

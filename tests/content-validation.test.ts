@@ -94,6 +94,7 @@ describe('admin content validation', () => {
       legalName: '', excerpt: '', content: '', image: '', foundedYear: null,
       region: 'Краснодарский край', address: '', latitude: null, longitude: null,
       website: '', email: '', phone: '', vineyardArea: '', annualProduction: '', specialization: '', visitInfo: '',
+      isVisible: true,
     }
 
     expect(createWinerySchema.safeParse(winery).success).toBe(true)
@@ -122,6 +123,7 @@ describe('admin content validation', () => {
       website: 'example.com',
       latitude: '100',
       longitude: '38.97',
+      isVisible: true,
     })).toEqual([
       'Сайт: укажите полный URL, начинающийся с http:// или https://.',
       'Координаты: широта должна быть числом от -90 до 90.',

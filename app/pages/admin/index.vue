@@ -11,7 +11,7 @@ const { data: overview, refresh } = await useFetch<AdminContentOverview>('/api/a
 const pendingVisibility = ref('')
 const errorMessage = ref('')
 
-const toggleVisibility = async (kind: 'winemakers' | 'terroirs' | 'wines', id: number, isVisible: boolean) => {
+const toggleVisibility = async (kind: 'wineries' | 'stores' | 'winemakers' | 'terroirs' | 'wines', id: number, isVisible: boolean) => {
   const key = `${kind}-${id}`
   pendingVisibility.value = key
   errorMessage.value = ''
@@ -21,7 +21,7 @@ const toggleVisibility = async (kind: 'winemakers' | 'terroirs' | 'wines', id: n
       body: { isVisible: !isVisible },
     })
     await refresh()
-    await refreshNuxtData(['public-wines', 'public-winemakers', 'public-terroirs'])
+    await refreshNuxtData(['public-wines', 'public-winemakers', 'public-terroirs', 'public-stores'])
   } catch (error) {
     errorMessage.value = getApiErrorMessage(error, 'Не удалось изменить видимость')
   } finally {
@@ -56,16 +56,23 @@ useHead({ title: 'Админ-панель — Идея Винодела' })
         <NuxtLink to="/admin/wineries/new" class="rounded-full bg-primary px-5 py-3 text-xs uppercase tracking-[0.12em] text-canvas">Добавить винодельню</NuxtLink>
       </div>
       <div class="mt-5 overflow-x-auto rounded-2xl border border-border bg-canvas">
-        <table class="w-full min-w-[760px] text-left text-sm">
-          <thead class="border-b border-border bg-surface text-xs uppercase tracking-[0.1em] text-primary"><tr><th class="p-4">Винодельня</th><th class="p-4">Slug</th><th class="p-4">Регион</th><th class="p-4">Год основания</th></tr></thead>
+        <table class="w-full min-w-[980px] text-left text-sm">
+          <thead class="border-b border-border bg-surface text-xs uppercase tracking-[0.1em] text-primary"><tr><th class="p-4">Винодельня</th><th class="p-4">Slug</th><th class="p-4">Регион</th><th class="p-4">Год основания</th><th class="p-4">Статус</th><th class="p-4" /></tr></thead>
           <tbody>
             <tr v-for="item in overview.wineries" :key="item.id" class="border-b border-border last:border-0">
               <td class="p-4 font-medium">{{ item.title }}</td>
               <td class="p-4 text-ink/55">{{ item.slug }}</td>
               <td class="p-4">{{ item.region }}</td>
               <td class="p-4">{{ item.foundedYear || '—' }}</td>
+              <td class="p-4"><span :class="item.isVisible ? 'text-green-700' : 'text-ink/45'">{{ item.isVisible ? 'Показывается' : 'Скрыта' }}</span></td>
+              <td class="p-4">
+                <div class="flex justify-end gap-2">
+                  <NuxtLink :to="`/admin/wineries/${item.id}/edit`" class="rounded-full border border-primary px-4 py-2 text-xs text-primary">Редактировать</NuxtLink>
+                  <button type="button" :disabled="pendingVisibility === `wineries-${item.id}`" class="cursor-pointer rounded-full border border-border-strong px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50" @click="toggleVisibility('wineries', item.id, item.isVisible)">{{ item.isVisible ? 'Скрыть' : 'Показать' }}</button>
+                </div>
+              </td>
             </tr>
-            <tr v-if="!overview.wineries.length"><td colspan="4" class="p-6 text-center text-ink/45">Винодельни ещё не добавлены.</td></tr>
+            <tr v-if="!overview.wineries.length"><td colspan="6" class="p-6 text-center text-ink/45">Винодельни ещё не добавлены.</td></tr>
           </tbody>
         </table>
       </div>
@@ -78,20 +85,27 @@ useHead({ title: 'Админ-панель — Идея Винодела' })
         <NuxtLink to="/admin/stores/new" class="rounded-full bg-primary px-5 py-3 text-xs uppercase tracking-[0.12em] text-canvas">Добавить точку</NuxtLink>
       </div>
       <div class="mt-5 overflow-x-auto rounded-2xl border border-border bg-canvas">
-        <table class="w-full min-w-[860px] text-left text-sm">
-          <thead class="border-b border-border bg-surface text-xs uppercase tracking-[0.1em] text-primary"><tr><th class="p-4">Магазин</th><th class="p-4">Город</th><th class="p-4">Адрес</th><th class="p-4">Координаты</th></tr></thead>
+        <table class="w-full min-w-[1080px] text-left text-sm">
+          <thead class="border-b border-border bg-surface text-xs uppercase tracking-[0.1em] text-primary"><tr><th class="p-4">Магазин</th><th class="p-4">Город</th><th class="p-4">Адрес</th><th class="p-4">Координаты</th><th class="p-4">Статус</th><th class="p-4" /></tr></thead>
           <tbody>
             <tr v-for="item in overview.stores" :key="item.id" class="border-b border-border last:border-0">
               <td class="p-4 font-medium"><a :href="item.website" target="_blank" rel="noopener noreferrer" class="text-primary underline decoration-primary/30 underline-offset-4">{{ item.title }}</a></td>
               <td class="p-4">{{ item.city }}</td>
               <td class="p-4">{{ item.address }}</td>
               <td class="p-4 font-mono text-xs text-ink/55">{{ item.coordinates.join(', ') }}</td>
+              <td class="p-4"><span :class="item.isVisible ? 'text-green-700' : 'text-ink/45'">{{ item.isVisible ? 'Показывается' : 'Скрыта' }}</span></td>
+              <td class="p-4">
+                <div class="flex justify-end gap-2">
+                  <NuxtLink :to="`/admin/stores/${item.id}/edit`" class="rounded-full border border-primary px-4 py-2 text-xs text-primary">Редактировать</NuxtLink>
+                  <button type="button" :disabled="pendingVisibility === `stores-${item.id}`" class="cursor-pointer rounded-full border border-border-strong px-4 py-2 text-xs disabled:cursor-not-allowed disabled:opacity-50" @click="toggleVisibility('stores', item.id, item.isVisible)">{{ item.isVisible ? 'Скрыть' : 'Показать' }}</button>
+                </div>
+              </td>
             </tr>
-            <tr v-if="!overview.stores.length"><td colspan="4" class="p-6 text-center text-ink/45">Точки магазинов ещё не добавлены.</td></tr>
+            <tr v-if="!overview.stores.length"><td colspan="6" class="p-6 text-center text-ink/45">Точки магазинов ещё не добавлены.</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="mt-3 text-xs text-ink/55">Новые точки сразу используются в блоке «Где купить» и на карте.</p>
+      <p class="mt-3 text-xs text-ink/55">Видимые точки используются в блоке «Где купить» и на карте; скрытые остаются только в админке.</p>
     </section>
 
     <section class="mt-12">
