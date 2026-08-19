@@ -74,6 +74,18 @@ docker compose exec app node scripts/backup-database.ts
 docker compose up --build -d
 ```
 
+### Portainer Stack
+
+При развёртывании через Portainer файл `.env` не требуется. В разделе **Environment variables** стека нужно задать:
+
+- `NUXT_ADMIN_PASSWORD_HASH` — полный scrypt-хеш пароля;
+- `NUXT_SESSION_PASSWORD` — постоянная случайная строка длиной не менее 32 символов;
+- `NUXT_ADMIN_LOGIN` — логин администратора, по умолчанию `admin`.
+
+Дополнительно можно задать `NUXT_PUBLIC_SITE_URL`, `APP_HOST`, `APP_PORT`, `RUN_DB_SEED` и `NUXT_PUBLIC_YANDEX_MAPS_API_KEY`. Для доступа к порту напрямую извне сервера укажите `APP_HOST=0.0.0.0`; при работе через reverse proxy рекомендуется `127.0.0.1`.
+
+При вставке `NUXT_ADMIN_PASSWORD_HASH` в поле переменной Portainer кавычки вокруг значения не нужны. Значение нужно скопировать целиком, включая все символы `$`.
+
 ## Проверки
 
 ```bash
