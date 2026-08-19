@@ -21,7 +21,7 @@ useHead({
 <template>
   <main class="pt-8">
     <div class="container-iw">
-      <section><NuxtLink to="/vinodely" class="text-xs uppercase tracking-[0.16em] text-primary">← Назад к виноделам</NuxtLink></section>
+      <section><NuxtLink to="/vinodely" class="text-xs uppercase tracking-[0.16em] text-primary">← Все виноделы</NuxtLink></section>
       <section class="mt-8 grid grid-cols-[minmax(0,380px)_minmax(0,1fr)] items-start gap-[clamp(28px,4vw,48px)] max-[900px]:grid-cols-1">
         <div class="sticky top-[92px] max-[900px]:static max-[900px]:mx-auto max-[900px]:w-full max-[900px]:max-w-[520px]">
           <NuxtImg

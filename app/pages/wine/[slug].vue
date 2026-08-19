@@ -49,7 +49,7 @@ useHead({
 <template>
   <main class="pt-8 font-sans">
     <div class="container-iw">
-      <section><NuxtLink to="/wines" class="text-xs uppercase tracking-[0.16em] text-primary">← Назад к архиву вина</NuxtLink></section>
+      <section><NuxtLink to="/wines" class="text-xs uppercase tracking-[0.16em] text-primary">← Все вина</NuxtLink></section>
 
       <section class="mt-7"><WineCodeFilter v-model="filters" :show-note="false" @submit="applyFilters" /></section>
 
