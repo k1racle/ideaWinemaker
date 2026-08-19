@@ -75,7 +75,7 @@ useHead({
           alt="Иммерсивная эногастрономическая постановка"
           :width="1920"
           :height="1080"
-          sizes="100vw"
+          sizes="100vw lg:1320px"
           format="webp"
           loading="lazy"
           decoding="async"

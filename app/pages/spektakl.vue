@@ -18,7 +18,7 @@ useHead({ title: `${spectaclePage.title} — Идея Винодела`, meta: [
           :src="spectaclePage.image"
           alt="Спектакль Идея винодела"
           :width="1600"
-          sizes="100vw"
+          sizes="100vw lg:1320px"
           format="webp"
           fetchpriority="high"
           class="max-h-[760px] w-full object-cover"

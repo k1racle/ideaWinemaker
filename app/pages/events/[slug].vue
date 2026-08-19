@@ -23,7 +23,7 @@ useHead({
           :src="event.image"
           :alt="event.title"
           :width="1600"
-          sizes="100vw"
+          sizes="100vw lg:1320px"
           format="webp"
           fetchpriority="high"
           class="h-full w-full object-cover"
