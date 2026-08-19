@@ -1,11 +1,19 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24-bookworm-slim AS build
+# The full Debian image includes the native build toolchain required when an
+# npm package has no prebuilt binary for the server architecture.
+FROM node:24-bookworm AS build
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci \
+  --no-audit \
+  --no-fund \
+  --fetch-retries=5 \
+  --fetch-retry-factor=2 \
+  --fetch-retry-mintimeout=10000 \
+  --fetch-retry-maxtimeout=120000
 
 COPY . .
 
