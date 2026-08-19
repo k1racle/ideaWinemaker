@@ -21,7 +21,7 @@ services:
       DATABASE_BACKUP_DIR: /app/data/backups
       RUN_DB_SEED: ${RUN_DB_SEED:-true}
     ports:
-      - "${APP_HOST:-127.0.0.1}:${APP_PORT:-3002}:3000"
+      - "${APP_PORT:-8020}:3000"
     volumes:
       - ideawinemaker_data:/app/data
     stop_grace_period: 20s
