@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const newsPosts = await usePublicSiteDocument('news')
 
-useHead({ title: 'Новости — Идея Винодела', meta: [{ name: 'description', content: 'Новости проекта, коллекции и российского виноделия.' }] })
+useHead({
+  title: 'Новости российского виноделия',
+  meta: [{ name: 'description', content: 'Новости проекта «Идея Винодела», авторской коллекции, виноделов Кубани, отраслевых выставок и событий российского виноделия.' }],
+})
 </script>
 
 <template>

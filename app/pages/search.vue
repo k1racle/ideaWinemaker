@@ -29,7 +29,7 @@ const search = () => {
   router.replace({ query })
 }
 
-useHead({ title: 'Поиск вина — Идея Винодела', meta: [{ name: 'description', content: 'Поиск по коллекции авторских вин.' }] })
+useHead({ title: 'Поиск авторского вина', meta: [{ name: 'description', content: 'Поиск по коллекции авторских вин Кубани по сорту, урожаю, терруару, виноделу и методу производства.' }] })
 </script>
 
 <template>

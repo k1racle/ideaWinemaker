@@ -1,13 +1,15 @@
 <script setup lang="ts">
-definePageMeta({ alias: ['/manifest'] })
+definePageMeta({ alias: ['/about'] })
 
 const pages = await usePublicSiteDocument('pages')
 const { founder, founderBiography, manifestParagraphs } = pages
 const { data: winemakers } = await usePublicWinemakers()
+const canonicalUrl = useCanonicalUrl('/manifest')
 
 useHead({
-  title: 'Манифест — Идея Винодела',
-  meta: [{ name: 'description', content: 'Манифест бренда и история основателя проекта Алексея Батагова.' }],
+  title: 'Манифест проекта',
+  meta: [{ name: 'description', content: 'Манифест проекта «Идея Винодела», история его основателя Алексея Батагова и философия коллекции авторских вин Кубани.' }],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
 

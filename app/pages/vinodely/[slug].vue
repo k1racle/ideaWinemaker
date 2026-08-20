@@ -13,8 +13,11 @@ const { data: wines } = await usePublicWines()
 const relatedWines = computed(() => wines.value.filter(wine => winemaker.meta.wineSlugs.includes(wine.slug)))
 
 useHead({
-  title: `${winemaker.title} — Идея Винодела`,
-  meta: [{ name: 'description', content: winemaker.excerpt }],
+  title: toSeoTitle(winemaker.title),
+  meta: [{
+    name: 'description',
+    content: toSeoDescription(`${winemaker.title} — винодел из ${winemaker.meta.location}. ${winemaker.meta.aboutBrand || winemaker.excerpt}`),
+  }],
 })
 </script>
 

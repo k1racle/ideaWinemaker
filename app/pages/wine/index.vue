@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { WineFilters } from '~~/shared/types'
 
-definePageMeta({ alias: ['/wine'] })
+definePageMeta({ alias: ['/wines'] })
 
 const route = useRoute()
 const router = useRouter()
 const { data: wines } = await usePublicWines()
+const canonicalUrl = useCanonicalUrl('/wine')
 const asString = (value: unknown) => typeof value === 'string' ? value : ''
 
 const filters = ref<WineFilters>({
@@ -28,8 +29,9 @@ const applyFilters = () => {
 }
 
 useHead({
-  title: 'Вина — Идея Винодела',
-  meta: [{ name: 'description', content: 'Каталог коллекции авторских вин с фильтрацией по урожаю, терруару, виноделу и методу.' }],
+  title: 'Авторские вина',
+  meta: [{ name: 'description', content: 'Каталог авторских вин: выбирайте вина по урожаю, терруару, виноделу и методу производства и знакомьтесь с историей каждого автора.' }],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
 

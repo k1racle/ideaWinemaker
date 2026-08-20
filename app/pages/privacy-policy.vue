@@ -3,8 +3,8 @@ const policies = await usePublicSiteDocument('policies')
 const { privacyPolicy } = policies
 
 useHead({
-  title: `${privacyPolicy.title} — Идея Винодела`,
-  meta: [{ name: 'description', content: privacyPolicy.description }],
+  title: toSeoTitle(privacyPolicy.title),
+  meta: [{ name: 'description', content: toSeoDescription(privacyPolicy.description) }],
 })
 </script>
 

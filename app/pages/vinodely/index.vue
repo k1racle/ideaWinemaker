@@ -2,8 +2,8 @@
 const { data: winemakers } = await usePublicWinemakers()
 
 useHead({
-  title: 'Виноделы — Идея Винодела',
-  meta: [{ name: 'description', content: 'Авторы коллекции: Андрюс Юцис, семья Доротенко и Анна Нестерова.' }],
+  title: 'Виноделы Кубани',
+  meta: [{ name: 'description', content: 'Авторы коллекции вин Кубани: Андрюс Юцис, семья Доротенко и Анна Нестерова. Их истории, методы работы, терруары и авторские вина.' }],
 })
 </script>
 

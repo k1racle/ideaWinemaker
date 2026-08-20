@@ -2,7 +2,13 @@
 const pages = await usePublicSiteDocument('pages')
 const { spectaclePage } = pages
 
-useHead({ title: `${spectaclePage.title} — Идея Винодела`, meta: [{ name: 'description', content: spectaclePage.paragraphs[0] }] })
+useHead({
+  title: 'Эногастрономический спектакль',
+  meta: [{
+    name: 'description',
+    content: 'Иммерсивный эногастрономический спектакль о российском вине, его авторах и философии виноделия через действие, образ, вкус и атмосферу.',
+  }],
+})
 </script>
 
 <template>

@@ -5,8 +5,8 @@ const event = events.find(item => item.slug === String(route.params.slug))
 if (!event) throw createError({ status: 404, statusText: 'Мероприятие не найдено' })
 
 useHead({
-  title: `${event.title} — Идея Винодела`,
-  meta: [{ name: 'description', content: event.excerpt }],
+  title: toSeoTitle(event.title),
+  meta: [{ name: 'description', content: toSeoDescription(`${event.excerpt} ${event.meta.dateStart}–${event.meta.dateEnd}, ${event.meta.city}, ${event.meta.location}.`) }],
 })
 </script>
 
@@ -51,10 +51,10 @@ useHead({
       <section v-if="event.gallery.length" class="mt-[52px]">
         <SectionHeading title="Галерея" />
         <div class="grid grid-cols-4 gap-7 max-[900px]:grid-cols-2 max-[520px]:grid-cols-1">
-          <div v-for="image in event.gallery" :key="image" class="h-44 overflow-hidden">
+          <div v-for="(image, index) in event.gallery" :key="image" class="h-44 overflow-hidden">
             <NuxtImg
               :src="image"
-              alt=""
+              :alt="`${event.title}: фотография ${index + 1}`"
               :width="600"
               sizes="100vw sm:50vw lg:25vw"
               format="webp"

@@ -2,7 +2,7 @@
 const policies = await usePublicSiteDocument('policies')
 const { cookiesPolicy } = policies
 
-useHead({ title: `${cookiesPolicy.title} — Идея Винодела`, meta: [{ name: 'description', content: cookiesPolicy.description }] })
+useHead({ title: toSeoTitle(cookiesPolicy.title), meta: [{ name: 'description', content: toSeoDescription(cookiesPolicy.description) }] })
 </script>
 
 <template><PolicyPage :document="cookiesPolicy" /></template>

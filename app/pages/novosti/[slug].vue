@@ -5,7 +5,10 @@ const post = newsPosts.find(item => item.slug === String(route.params.slug))
 if (!post) throw createError({ status: 404, statusText: 'Новость не найдена' })
 const related = newsPosts.filter(item => item.id !== post.id).slice(0, 4)
 
-useHead({ title: `${post.title} — Идея Винодела`, meta: [{ name: 'description', content: post.excerpt }] })
+useHead({
+  title: toSeoTitle(post.title.length > 70 ? post.excerpt : post.title),
+  meta: [{ name: 'description', content: toSeoDescription(post.excerpt) }],
+})
 </script>
 
 <template>

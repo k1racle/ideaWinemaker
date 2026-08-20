@@ -11,12 +11,12 @@ const { data: winemakers } = await usePublicWinemakers()
 
 const applyFilters = () => {
   const query = Object.fromEntries(Object.entries(filters.value).filter(([, value]) => value))
-  router.push({ path: '/wines', query })
+  router.push({ path: '/wine', query })
 }
 
 useHead({
-  title: 'Идея Винодела — коллекция авторских вин',
-  meta: [{ name: 'description', content: 'Авторские вина, виноделы, терруары и технологические решения одной коллекции.' }],
+  title: 'Коллекция авторских вин',
+  meta: [{ name: 'description', content: 'Авторские вина, их создатели, терруары и технологии. Узнайте, как характер винодела и метод производства раскрываются в каждом вине.' }],
 })
 </script>
 
@@ -50,7 +50,7 @@ useHead({
           <p class="mt-1 text-xs uppercase tracking-[0.2em] text-primary">{{ founder.role }}</p>
           <blockquote class="mt-[18px] font-serif text-[clamp(20px,2.2vw,28px)] leading-[1.24] text-muted">{{ founder.quote }}</blockquote>
           <p class="mt-5 leading-relaxed">{{ homeIntro.founderText }}</p>
-          <NuxtLink to="/about" class="mt-4 inline-block text-xs uppercase tracking-[0.18em] text-primary">Манифест</NuxtLink>
+          <NuxtLink to="/manifest" class="mt-4 inline-block text-xs uppercase tracking-[0.18em] text-primary">Манифест</NuxtLink>
         </div>
       </section>
 

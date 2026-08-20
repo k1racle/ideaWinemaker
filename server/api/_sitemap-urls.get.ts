@@ -4,12 +4,12 @@ import { getPublicSiteDocument } from '../repositories/site-content'
 
 const staticPublicUrls: SitemapUrlInput[] = [
   '/',
-  '/about',
+  '/manifest',
   '/events',
   '/novosti',
   '/spektakl',
   '/vinodely',
-  '/wines',
+  '/wine',
 ]
 
 export default defineSitemapEventHandler((): SitemapUrlInput[] => {

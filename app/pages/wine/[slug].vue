@@ -31,7 +31,7 @@ const filters = ref<WineFilters>({
 
 const applyFilters = () => {
   const query = Object.fromEntries(Object.entries(filters.value).filter(([, value]) => value))
-  router.push({ path: '/wines', query })
+  router.push({ path: '/wine', query })
 }
 
 const specs = [
@@ -41,15 +41,18 @@ const specs = [
 ]
 
 useHead({
-  title: `${wine.meta.variety}. ${wine.meta.method} — Идея Винодела`,
-  meta: [{ name: 'description', content: wine.excerpt }],
+  title: toSeoTitle(`${wine.meta.variety}. ${wine.meta.method}`),
+  meta: [{
+    name: 'description',
+    content: toSeoDescription(`${wine.excerpt} ${wine.meta.wineType} вино ${wine.meta.year} года. Винодел — ${wine.meta.winemakerName}, терруар — ${wine.meta.terroirName}.`),
+  }],
 })
 </script>
 
 <template>
   <main class="pt-8 font-sans">
     <div class="container-iw">
-      <section><NuxtLink to="/wines" class="text-xs uppercase tracking-[0.16em] text-primary">← Все вина</NuxtLink></section>
+      <section><NuxtLink to="/wine" class="text-xs uppercase tracking-[0.16em] text-primary">← Все вина</NuxtLink></section>
 
       <section class="mt-7"><WineCodeFilter v-model="filters" :show-note="false" @submit="applyFilters" /></section>
 
