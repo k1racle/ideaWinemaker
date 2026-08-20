@@ -38,7 +38,7 @@ useHead({
             :src="founder.image"
             :alt="founder.name"
             :width="840"
-            sizes="100vw md:420px"
+            sizes="100vw sm:50vw lg:33vw"
             format="webp"
             loading="lazy"
             decoding="async"
