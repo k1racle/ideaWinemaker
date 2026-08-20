@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { newsPosts } from '~~/shared/mock/news'
+const newsPosts = await usePublicSiteDocument('news')
 
 useHead({ title: 'Новости — Идея Винодела', meta: [{ name: 'description', content: 'Новости проекта, коллекции и российского виноделия.' }] })
 </script>

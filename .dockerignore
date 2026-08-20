@@ -20,6 +20,7 @@ backups
 *.sqlite-shm
 *.sqlite-wal
 *.sqlite-journal
+!database/bootstrap-content.sqlite
 Dockerfile*
 compose*.yaml
 compose*.yml

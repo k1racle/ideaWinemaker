@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Store } from '~~/shared/mock/commerce'
+import type { Store } from '~~/shared/types/content'
 
 interface YandexMapInstance {
   geoObjects: {

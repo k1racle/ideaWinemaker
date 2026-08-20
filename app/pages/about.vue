@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { founder, founderBiography, manifestParagraphs } from '~~/shared/mock/pages'
-
 definePageMeta({ alias: ['/manifest'] })
 
+const pages = await usePublicSiteDocument('pages')
+const { founder, founderBiography, manifestParagraphs } = pages
 const { data: winemakers } = await usePublicWinemakers()
 
 useHead({

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { newsBySlug, newsPosts } from '~~/shared/mock/news'
-
 const route = useRoute()
-const post = newsBySlug(String(route.params.slug))
+const newsPosts = await usePublicSiteDocument('news')
+const post = newsPosts.find(item => item.slug === String(route.params.slug))
 if (!post) throw createError({ status: 404, statusText: 'Новость не найдена' })
 const related = newsPosts.filter(item => item.id !== post.id).slice(0, 4)
 

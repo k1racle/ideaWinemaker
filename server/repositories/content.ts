@@ -46,6 +46,13 @@ export interface WineQueryFilters {
   method?: string
 }
 
+export interface PublicContentSitemapEntry {
+  loc: string
+  lastmod: Date
+}
+
+const latestDate = (...dates: Date[]) => new Date(Math.max(...dates.map(date => date.getTime())))
+
 const hydrateWinemakers = (rows: WinemakerRow[]): Winemaker[] => {
   if (!rows.length) return []
   const { db } = useContentDatabase()
@@ -269,6 +276,57 @@ export const getPublicWineBySlug = (slug: string) => {
     ))
     .get()
   return row ? hydrateWines([row])[0] : undefined
+}
+
+export const listPublicContentSitemapEntries = (): PublicContentSitemapEntry[] => {
+  const { db } = useContentDatabase()
+  const publicWinemakers = db.select({
+    id: winemakers.id,
+    slug: winemakers.slug,
+    updatedAt: winemakers.updatedAt,
+  }).from(winemakers)
+    .where(eq(winemakers.isVisible, true))
+    .orderBy(asc(winemakers.id))
+    .all()
+
+  const publicWines = db.select({
+    slug: wines.slug,
+    winemakerId: wines.winemakerId,
+    updatedAt: wines.updatedAt,
+    winemakerUpdatedAt: winemakers.updatedAt,
+    terroirUpdatedAt: terroirs.updatedAt,
+  }).from(wines)
+    .innerJoin(winemakers, eq(wines.winemakerId, winemakers.id))
+    .innerJoin(terroirs, eq(wines.terroirId, terroirs.id))
+    .where(and(
+      eq(wines.isVisible, true),
+      eq(winemakers.isVisible, true),
+      eq(terroirs.isVisible, true),
+    ))
+    .orderBy(asc(wines.id))
+    .all()
+    .map(row => ({
+      ...row,
+      lastmod: latestDate(row.updatedAt, row.winemakerUpdatedAt, row.terroirUpdatedAt),
+    }))
+
+  const winemakerEntries = publicWinemakers.map((winemaker) => {
+    const relatedWineDates = publicWines
+      .filter(wine => wine.winemakerId === winemaker.id)
+      .map(wine => wine.lastmod)
+
+    return {
+      loc: `/vinodely/${winemaker.slug}`,
+      lastmod: latestDate(winemaker.updatedAt, ...relatedWineDates),
+    }
+  })
+
+  const wineEntries = publicWines.map(wine => ({
+    loc: `/wine/${wine.slug}`,
+    lastmod: wine.lastmod,
+  }))
+
+  return [...winemakerEntries, ...wineEntries]
 }
 
 export const listPublicStores = (): Store[] => {

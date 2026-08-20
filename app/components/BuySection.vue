@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { partners } from '~~/shared/mock/commerce'
+const partners = await usePublicSiteDocument('partners')
 
 const selectedCity = ref('')
 const selectedStoreId = ref<number>()

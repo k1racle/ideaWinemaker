@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { EventRecord } from '~~/shared/mock/events'
+import type { EventRecord } from '~~/shared/types/site-content'
 
 defineProps<{ event: EventRecord }>()
 </script>

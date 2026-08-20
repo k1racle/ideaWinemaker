@@ -39,6 +39,14 @@ export default defineNuxtConfig({
     description: 'Портал о вине и виноделах Кубани',
   },
 
+  sitemap: {
+    // The public sitemap is assembled explicitly so that admin, search and
+    // other technical routes never leak into it through Nuxt page discovery.
+    excludeAppSources: true,
+    sources: ['/api/_sitemap-urls'],
+    cacheMaxAgeSeconds: 60,
+  },
+
   // The project does not define OG image templates yet. Disabling only this
   // optional SEO renderer keeps the rest of the SEO suite available without
   // adding renderer packages that are outside the migration dependency set.
@@ -50,27 +58,24 @@ export default defineNuxtConfig({
     databasePath: process.env.NUXT_DATABASE_PATH || process.env.DATABASE_PATH || '.data/ideawinemaker.sqlite',
     adminLogin: process.env.NUXT_ADMIN_LOGIN || process.env.ADMIN_LOGIN || '',
     adminPasswordHash: process.env.NUXT_ADMIN_PASSWORD_HASH || process.env.ADMIN_PASSWORD_HASH || '',
-    session: {
-      password: process.env.NUXT_SESSION_PASSWORD || '',
-      maxAge: 60 * 60 * 24 * 7,
-      cookie: {
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-      },
-    },
+    // session: {
+    //   password: process.env.NUXT_SESSION_PASSWORD || '',
+    //   maxAge: 60 * 60 * 24 * 7,
+    //   cookie: {
+    //     sameSite: 'lax',
+    //     secure: process.env.NODE_ENV === 'production',
+    //   },
+    // },
     public: {
       yandexMapsApiKey: process.env.NUXT_PUBLIC_YANDEX_MAPS_API_KEY || '',
     },
   },
 
   routeRules: {
-    '/vina': { redirect: '/wines' },
-    '/novostnaya-lenta': { redirect: '/novosti' },
-    '/meropriyatiya': { redirect: '/events' },
-    '/3233232-2': { redirect: '/about' },
-    '/brend-ideya-vinodela-kollekcziya-avtorskih-vin-vpervye-budet-predstavlen-na-vystavke-vinodelcheskoj-produkczii-vinorus-vinoteh-v-krasnodare': {
-      redirect: '/novosti/brend-ideya-vinodela-na-vinorus-vinoteh',
-    },
+    '/admin': { robots: 'noindex, nofollow, noarchive' },
+    '/admin/**': { robots: 'noindex, nofollow, noarchive' },
+    '/api/**': { robots: 'noindex, nofollow, noarchive' },
+    '/search': { robots: 'noindex, follow' },
   },
 
   fonts: {

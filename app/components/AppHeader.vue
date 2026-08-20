@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { headerSocials, mainMenu } from '~~/shared/mock/site'
+const { headerSocials, mainMenu } = await usePublicSiteDocument('site')
 
 const route = useRoute()
 const isActive = (url: string) => (url === '/' ? route.path === '/' : route.path.startsWith(url))

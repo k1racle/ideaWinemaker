@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { headerSocials } from '~~/shared/mock/site'
+const { headerSocials } = await usePublicSiteDocument('site')
 </script>
 
 <template>

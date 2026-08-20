@@ -1,4 +1,4 @@
-import { mkdirSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
 import { dirname, isAbsolute, resolve } from 'node:path'
 import Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
@@ -9,9 +9,22 @@ export const resolveDatabasePath = (databasePath?: string) => {
   return isAbsolute(configuredPath) ? configuredPath : resolve(process.cwd(), configuredPath)
 }
 
+export const resolveInitialDatabasePath = (databasePath?: string) => {
+  const configuredPath = databasePath || process.env.NUXT_INITIAL_DATABASE_PATH || 'database/bootstrap-content.sqlite'
+  return isAbsolute(configuredPath) ? configuredPath : resolve(process.cwd(), configuredPath)
+}
+
 export const openDatabase = (databasePath?: string) => {
   const resolvedPath = resolveDatabasePath(databasePath)
   mkdirSync(dirname(resolvedPath), { recursive: true })
+
+  if (!existsSync(resolvedPath)) {
+    const initialDatabasePath = resolveInitialDatabasePath()
+    if (!existsSync(initialDatabasePath)) {
+      throw new Error(`Initial SQLite database not found: ${initialDatabasePath}`)
+    }
+    if (resolvedPath !== initialDatabasePath) copyFileSync(initialDatabasePath, resolvedPath)
+  }
 
   const sqlite = new Database(resolvedPath)
   sqlite.pragma('foreign_keys = ON')
@@ -24,5 +37,10 @@ export const openDatabase = (databasePath?: string) => {
     db: drizzle(sqlite, { schema }),
   }
 }
+
+export const openInitialContentDatabase = () => new Database(resolveInitialDatabasePath(), {
+  readonly: true,
+  fileMustExist: true,
+})
 
 export type DatabaseContext = ReturnType<typeof openDatabase>

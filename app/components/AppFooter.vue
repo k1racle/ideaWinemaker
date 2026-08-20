@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mainMenu, siteName } from '~~/shared/mock/site'
+const { mainMenu, siteName } = await usePublicSiteDocument('site')
 
 const year = new Date().getFullYear()
 </script>

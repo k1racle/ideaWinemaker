@@ -18,8 +18,8 @@ services:
       NUXT_ADMIN_PASSWORD_HASH: ${NUXT_ADMIN_PASSWORD_HASH:?Set NUXT_ADMIN_PASSWORD_HASH in the stack environment}
       NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD:?Set NUXT_SESSION_PASSWORD in the stack environment}
       NUXT_DATABASE_PATH: /app/data/ideawinemaker.sqlite
+      NUXT_INITIAL_DATABASE_PATH: /app/database/bootstrap-content.sqlite
       DATABASE_BACKUP_DIR: /app/data/backups
-      RUN_DB_SEED: ${RUN_DB_SEED:-true}
     ports:
       - "${APP_PORT:-8020}:3000"
     volumes:

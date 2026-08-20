@@ -1,14 +1,9 @@
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join, resolve } from 'node:path'
+import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
-import { stores as legacyStores } from '../shared/mock/commerce'
-import { terroirs as legacyTerroirs } from '../shared/mock/terroirs'
-import { wines as legacyWines } from '../shared/mock/wines'
-import { winemakers as legacyWinemakers } from '../shared/mock/winemakers'
 import { openDatabase, type DatabaseContext } from '../server/database/connection'
-import { seedExistingContent } from '../server/database/seed'
+import { getPublicSiteContent } from '../server/repositories/site-content'
 import {
   createTerroir,
   createStore,
@@ -25,6 +20,7 @@ import {
   getPublicWineBySlug,
   getPublicWinemakerBySlug,
   listPublicTerroirs,
+  listPublicContentSitemapEntries,
   listPublicStores,
   listPublicWinemakers,
   listPublicWines,
@@ -46,7 +42,6 @@ let testDirectory: string
 beforeEach(() => {
   testDirectory = mkdtempSync(join(tmpdir(), 'ideawinemaker-test-'))
   context = openDatabase(join(testDirectory, 'content.sqlite'))
-  migrate(context.db, { migrationsFolder: resolve(process.cwd(), 'drizzle') })
   globalThis.__ideaWinemakerDatabase = context
 })
 
@@ -57,18 +52,32 @@ afterEach(() => {
 })
 
 describe('SQLite content migration', () => {
-  it('imports the legacy arrays without field loss and remains idempotent', () => {
-    expect(seedExistingContent(context)).toEqual({ winemakersCount: 3, terroirsCount: 2, winesCount: 6, storesCount: 9 })
-    expect(seedExistingContent(context)).toEqual({ winemakersCount: 3, terroirsCount: 2, winesCount: 6, storesCount: 9 })
-    expect(listPublicWinemakers()).toEqual(legacyWinemakers)
-    expect(listPublicTerroirs()).toEqual(legacyTerroirs)
-    expect(listPublicWines().map(({ terroir: _terroir, ...wine }) => wine))
-      .toEqual(legacyWines.map(({ terroir: _terroir, ...wine }) => wine))
-    expect(listPublicStores()).toEqual(legacyStores)
+  it('initializes a new writable database from the versioned SQLite baseline', () => {
+    expect(listPublicWinemakers()).toHaveLength(3)
+    expect(listPublicTerroirs()).toHaveLength(2)
+    expect(listPublicWines()).toHaveLength(6)
+    expect(listPublicStores()).toHaveLength(9)
+    expect(listPublicWines()[0]).toMatchObject({
+      meta: { winemakerSlug: expect.any(String), terroirSlug: expect.any(String) },
+      details: expect.any(Array),
+    })
+
+    const siteContent = getPublicSiteContent()
+    expect(siteContent).toMatchObject({
+      site: { mainMenu: expect.any(Array), headerSocials: expect.any(Array) },
+      partners: expect.any(Array),
+      policies: { privacyPolicy: expect.any(Object), cookiesPolicy: expect.any(Object) },
+      news: expect.any(Array),
+      events: expect.any(Array),
+    })
+    expect(siteContent.site.mainMenu).toHaveLength(5)
+    expect(siteContent.site.headerSocials).toHaveLength(7)
+    expect(siteContent.partners).toHaveLength(2)
+    expect(siteContent.news).toHaveLength(1)
+    expect(siteContent.events).toHaveLength(1)
   })
 
   it('enforces the required wine-to-winemaker foreign key', () => {
-    seedExistingContent(context)
     expect(() => context.sqlite.prepare('UPDATE wines SET winemaker_id = 999999 WHERE id = 1').run()).toThrow()
     expect(() => context.sqlite.prepare('UPDATE wines SET terroir_id = 999999 WHERE id = 1').run()).toThrow()
     expect(() => context.sqlite.prepare('DELETE FROM winemakers WHERE id = 1').run()).toThrow()
@@ -76,17 +85,23 @@ describe('SQLite content migration', () => {
   })
 
   it('hides wine directly and masks all wines of a hidden winemaker', () => {
-    seedExistingContent(context)
+    const firstWine = listPublicWines()[0]!
+    const firstWinemaker = listPublicWinemakers()[0]!
+
+    expect(listPublicContentSitemapEntries().filter(entry => entry.loc.startsWith('/wine/'))).toHaveLength(6)
+    expect(listPublicContentSitemapEntries().filter(entry => entry.loc.startsWith('/vinodely/'))).toHaveLength(3)
 
     setWineVisibility(1, false)
     expect(listPublicWines()).toHaveLength(5)
+    expect(listPublicContentSitemapEntries().some(entry => entry.loc === `/wine/${firstWine.slug}`)).toBe(false)
     expect(listPublicWinemakers().find(item => item.id === 1)?.meta.wineSlugs).toHaveLength(2)
-    expect(getPublicWineBySlug(legacyWines[0]!.slug)).toBeUndefined()
+    expect(getPublicWineBySlug(firstWine.slug)).toBeUndefined()
 
     setWineVisibility(1, true)
     setWinemakerVisibility(1, false)
     expect(listPublicWinemakers()).toHaveLength(2)
     expect(listPublicWines()).toHaveLength(3)
+    expect(listPublicContentSitemapEntries().some(entry => entry.loc === `/vinodely/${firstWinemaker.slug}`)).toBe(false)
 
     setWinemakerVisibility(1, true)
     expect(listPublicWines()).toHaveLength(6)
@@ -100,7 +115,6 @@ describe('SQLite content migration', () => {
   })
 
   it('creates a winemaker and a strongly linked wine with ordered nested fields', () => {
-    seedExistingContent(context)
     const createdWinemaker = createWinemaker({
       slug: 'test-winemaker',
       title: 'Тестовый винодел',
@@ -211,7 +225,6 @@ describe('SQLite content migration', () => {
   })
 
   it('stores a new shop point with the commerce.ts fields and exposes it publicly', () => {
-    seedExistingContent(context)
     const created = createStore({
       title: 'Тестовая винотека',
       city: 'Краснодар',
@@ -259,7 +272,6 @@ describe('SQLite content migration', () => {
   })
 
   it('edits records and their nested fields while preserving the hidden gallery', () => {
-    seedExistingContent(context)
     const originalWinemaker = getAdminWinemakerById(1)!
     const originalTerroir = getAdminTerroirById(1)!
     const originalWine = getAdminWineById(1)!

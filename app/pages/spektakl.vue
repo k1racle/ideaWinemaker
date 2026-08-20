@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { spectaclePage } from '~~/shared/mock/pages'
+const pages = await usePublicSiteDocument('pages')
+const { spectaclePage } = pages
 
 useHead({ title: `${spectaclePage.title} — Идея Винодела`, meta: [{ name: 'description', content: spectaclePage.paragraphs[0] }] })
 </script>

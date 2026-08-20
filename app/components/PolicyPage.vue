@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PolicyDocument } from '~~/shared/mock/policies'
+import type { PolicyDocument } from '~~/shared/types/site-content'
 
 const props = defineProps<{ document: PolicyDocument }>()
 

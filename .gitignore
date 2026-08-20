@@ -16,6 +16,9 @@ dist/
 *.sqlite-journal
 backups/
 
+# Versioned baseline used only to initialize an empty runtime database.
+!database/bootstrap-content.sqlite
+
 # Local environment files (may contain API keys)
 .env
 .env.*

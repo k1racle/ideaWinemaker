@@ -1,8 +1,40 @@
 import { describe, expect, it } from 'vitest'
 import { validateStoreForm, validateWinemakerForm, validateWineryForm, validateWineForm } from '../app/utils/admin-content-validation'
 import { createStoreSchema, createTerroirSchema, createWinemakerSchema, createWinerySchema, createWineSchema } from '../server/validation/content'
-import { winemakers } from '../shared/mock/winemakers'
-import { wines } from '../shared/mock/wines'
+
+const completeWinemaker = {
+  slug: 'test-winemaker',
+  title: 'Тестовый винодел',
+  excerpt: 'Краткое описание',
+  content: 'Основное описание',
+  image: '/uploads/test-winemaker.jpg',
+  quote: 'Цитата',
+  biography: ['Биография'],
+  meta: { initials: 'TW', location: 'Краснодарский край', aboutBrand: 'О бренде' },
+  isVisible: true,
+}
+
+const completeWine = {
+  winemakerId: 1,
+  terroirId: 1,
+  slug: 'test-wine',
+  title: 'Тестовое вино',
+  excerpt: 'Краткое описание',
+  content: 'Авторский замысел',
+  image: '/uploads/test-wine.png',
+  authorQuote: 'Цитата автора',
+  details: [
+    { title: 'Урожай', items: ['Ручной сбор'] },
+    { title: 'Сезон', items: ['Тёплое лето'] },
+    { title: 'Технология', items: ['Ферментация'] },
+  ],
+  meta: {
+    wineType: 'Вино белое сухое', variety: 'Тестовый сорт', method: 'Тестовый метод', methodCode: 'TM',
+    year: '2026', alcohol: '12%', volume: '0,75 л.', batch: '100 бут.', bottleNumber: '001 / 100', servingTemperature: '8–10°С',
+    color: 'Светлый', aroma: 'Свежий', taste: 'Сбалансированный', pairing: 'Сыры',
+  },
+  isVisible: true,
+}
 
 describe('admin content validation', () => {
   it('rejects unsafe slugs and image paths', () => {
@@ -39,23 +71,21 @@ describe('admin content validation', () => {
   })
 
   it('returns readable grouped errors for incomplete admin forms', () => {
-    const winemaker = winemakers[0]!
     const winemakerErrors = validateWinemakerForm({
-      ...winemaker,
+      ...completeWinemaker,
       title: '',
       biography: [''],
-      meta: { ...winemaker.meta, location: '' },
+      meta: { ...completeWinemaker.meta, location: '' },
     })
     expect(winemakerErrors).toContain('Основная информация: заполните Заголовок, Локация.')
     expect(winemakerErrors).toContain('Биография: добавьте хотя бы один заполненный абзац.')
 
-    const wine = wines[0]!
     const wineErrors = validateWineForm({
-      ...wine,
+      ...completeWine,
       winemakerId: 0,
       terroirId: 0,
       details: [{ title: 'Технология', items: [''] }],
-      meta: { ...wine.meta, aroma: '', pairing: '' },
+      meta: { ...completeWine.meta, aroma: '', pairing: '' },
     })
     expect(wineErrors).toContain('Винодел: выберите винодела из списка.')
     expect(wineErrors).toContain('Терруар: выберите терруар из списка.')
@@ -63,10 +93,9 @@ describe('admin content validation', () => {
     expect(wineErrors).toContain('Технология: добавьте хотя бы один заполненный пункт.')
   })
 
-  it('accepts complete legacy records in client-side validation', () => {
-    expect(validateWinemakerForm(winemakers[0]!)).toEqual([])
-    const wine = wines[0]!
-    expect(validateWineForm({ ...wine, winemakerId: 1, terroirId: 1 })).toEqual([])
+  it('accepts complete records in client-side validation', () => {
+    expect(validateWinemakerForm(completeWinemaker)).toEqual([])
+    expect(validateWineForm(completeWine)).toEqual([])
   })
 
   it('normalizes terroir and method codes to uppercase', () => {

@@ -29,8 +29,8 @@ ENV NODE_ENV=production \
   HOST=0.0.0.0 \
   PORT=3000 \
   NUXT_DATABASE_PATH=/app/data/ideawinemaker.sqlite \
-  DATABASE_BACKUP_DIR=/app/data/backups \
-  RUN_DB_SEED=true
+  NUXT_INITIAL_DATABASE_PATH=/app/database/bootstrap-content.sqlite \
+  DATABASE_BACKUP_DIR=/app/data/backups
 
 WORKDIR /app
 
@@ -42,6 +42,7 @@ RUN groupadd --system ideawinemaker \
 COPY --from=build --chown=ideawinemaker:ideawinemaker /app/.output ./.output
 COPY --from=build --chown=ideawinemaker:ideawinemaker /app/node_modules ./node_modules
 COPY --from=build --chown=ideawinemaker:ideawinemaker /app/package.json ./package.json
+COPY --from=build --chown=ideawinemaker:ideawinemaker /app/database ./database
 COPY --from=build --chown=ideawinemaker:ideawinemaker /app/drizzle ./drizzle
 COPY --from=build --chown=ideawinemaker:ideawinemaker /app/scripts ./scripts
 COPY --from=build --chown=ideawinemaker:ideawinemaker /app/server ./server
@@ -54,4 +55,4 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:3000/api/wines').then(response => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"
 
-CMD ["sh", "-c", "node scripts/migrate-database.ts && if [ \"${RUN_DB_SEED:-true}\" = \"true\" ]; then node scripts/seed-database.ts; fi && exec node .output/server/index.mjs"]
+CMD ["node", ".output/server/index.mjs"]

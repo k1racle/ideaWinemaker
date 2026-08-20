@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { events } from '~~/shared/mock/events'
+const events = await usePublicSiteDocument('events')
 
 useHead({
   title: 'Мероприятия — Идея Винодела',

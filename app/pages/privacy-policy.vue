@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { privacyPolicy } from '~~/shared/mock/policies'
+const policies = await usePublicSiteDocument('policies')
+const { privacyPolicy } = policies
 
 useHead({
   title: `${privacyPolicy.title} — Идея Винодела`,

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { eventBySlug } from '~~/shared/mock/events'
-
 const route = useRoute()
-const event = eventBySlug(String(route.params.slug))
+const events = await usePublicSiteDocument('events')
+const event = events.find(item => item.slug === String(route.params.slug))
 if (!event) throw createError({ status: 404, statusText: 'Мероприятие не найдено' })
 
 useHead({

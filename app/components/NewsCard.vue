@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NewsPost } from '~~/shared/mock/news'
+import type { NewsPost } from '~~/shared/types/site-content'
 
 withDefaults(defineProps<{
   post: NewsPost

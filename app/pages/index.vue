@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { newsPosts } from '~~/shared/mock/news'
-import { founder, homeIntro } from '~~/shared/mock/pages'
 import { emptyWineFilters } from '~~/shared/types'
 
 const router = useRouter()
 const filters = ref(emptyWineFilters())
+const pages = await usePublicSiteDocument('pages')
+const newsPosts = await usePublicSiteDocument('news')
+const { founder, homeIntro } = pages
 const { data: wines } = await usePublicWines()
 const { data: winemakers } = await usePublicWinemakers()
 

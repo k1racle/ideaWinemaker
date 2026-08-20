@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { cookiesPolicy } from '~~/shared/mock/policies'
+const policies = await usePublicSiteDocument('policies')
+const { cookiesPolicy } = policies
 
 useHead({ title: `${cookiesPolicy.title} — Идея Винодела`, meta: [{ name: 'description', content: cookiesPolicy.description }] })
 </script>
